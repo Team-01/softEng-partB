@@ -1,2 +1,2 @@
 # softEng-partB
-Kit
+Kit is weird
