@@ -18,9 +18,12 @@ public class AnalyseResults {
     public void buildContent()
     {
     // Create second tab content
-        JPanel p = new JPanel();
+        GBTest gbt1 = new GBTest();
+        p = gbt1.gridDisplay;
         sp = new JScrollPane(p);
         sp.setBorder(mainStyle.borderScroll);
         sp.getVerticalScrollBar().setUnitIncrement(20); // This is required for smooth scrolling
+        
+        
     }
 }
