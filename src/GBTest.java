@@ -1,5 +1,5 @@
 
-import static com.sun.glass.ui.Cursor.setVisible;
+//import static com.sun.glass.ui.Cursor.setVisible;
 import java.awt.*;
 import static java.awt.GridBagConstraints.PAGE_START;
 import java.awt.event.ActionEvent;

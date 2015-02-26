@@ -7,20 +7,18 @@ public class ViewTeams {
     
     JPanel p;
     JScrollPane sp;
-    
     Style mainStyle = new Style();
     
     public ViewTeams()
     {
-        buildContent();
-    }
-    
-    public void buildContent()
-    {
-    // Create second tab content
+        // Make main class panel and make it a scrollpane
         JPanel p = new JPanel();
+        p.setBackground(Color.white);
+        p.setBorder(mainStyle.border20);
         sp = new JScrollPane(p);
         sp.setBorder(mainStyle.borderScroll);
-        sp.getVerticalScrollBar().setUnitIncrement(20); // This is required for smooth scrolling
+        mainStyle.smoothScroll(sp);
+        
+        // Add content below...
     }
 }

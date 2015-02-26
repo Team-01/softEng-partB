@@ -3,13 +3,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class CreateTeams {
-    
+
+public class ManageStudents
+{
     JPanel p;
-    JScrollPane sp; 
+    JScrollPane sp;
     Style mainStyle = new Style();
     
-    public CreateTeams()
+    public ManageStudents()
     {
         // Make main class panel and make it a scrollpane
         JPanel p = new JPanel();
