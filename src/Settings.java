@@ -174,7 +174,10 @@ public class Settings
                     String newPass = tPasswordSub2.getText();
                     String newPassConfirm = tPasswordSub3.getText();
                     
-                    db.selectSettings(); //refresh data in arraylists
+                    try {
+                        db.selectSettings(); //refresh data in arraylists
+                    }
+                    catch(Exception ex){System.out.println("settings line 180");}
                     
                     if (currentPass == db.settingsAdminPassword.get(0))
                     {
