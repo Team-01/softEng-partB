@@ -49,6 +49,14 @@ public class GBTest implements ActionListener{
         //setSize(1000,700);
         //pack();
         //set gbc and add button to grid locations in JPanel
+        buildDefault();
+        
+        //used to set buttons in off mode to start with.
+        yrAvgBtn1on = false;
+        tmAvgBtn2on = false;
+    }
+    public void buildDefault()
+    {
         gbc.weightx=0.1;
         gbc.weighty=0.1;
         gbc.anchor = GridBagConstraints.PAGE_START;
@@ -58,8 +66,6 @@ public class GBTest implements ActionListener{
         //gbc.insets = new Insets(0,0,10,0);
         gridDisplay.add(yrAvgBtn1,gbc);
 	gbc.gridy++;
-        //gridDisplay.add(labeltest,gbc);
-        //gbc.gridy++;
         gridDisplay.add(tmAvgBtn2,gbc);
         gbc.gridy++;
         gridDisplay.add(oaAvgBtn3,gbc);
@@ -67,9 +73,7 @@ public class GBTest implements ActionListener{
         gridDisplay.add(stComBtn4,gbc);
         gbc.gridy++;
         gridDisplay.add(inResBtn5,gbc);
-        //used to set buttons in off mode to start with.
-        yrAvgBtn1on = false;
-        tmAvgBtn2on = false;
+
         
         //set action listeners for buttons
         yrAvgBtn1.addActionListener(this);
@@ -77,13 +81,32 @@ public class GBTest implements ActionListener{
         oaAvgBtn3.addActionListener(this);
         stComBtn4.addActionListener(this);
         inResBtn5.addActionListener(this);
+        gridDisplay.validate();
+        gridDisplay.repaint();
+        
     }
     
     public void actionPerformed(ActionEvent event)
     {
         if(event.getSource()==yrAvgBtn1)
         {
-            studentCol(StudentsStr,2);
+            if (yrAvgBtn1on == false)
+            { 
+                
+                gridDisplay.removeAll();
+                buildDefault();
+                studentCol(StudentsStr,2);
+                yrAvgBtn1on= true;
+            }
+            else
+            {
+                gridDisplay.removeAll();
+                buildDefault();
+                
+                gridDisplay.validate();
+                gridDisplay.repaint();
+                //yrAvgBtn1on = false;
+              }
         }
         if(event.getSource()==tmAvgBtn2)
         {
@@ -137,7 +160,9 @@ public class GBTest implements ActionListener{
             gbc.gridy++;
             gridDisplay.add(inResBtn5,gbc);
         }
-        JFrame.getFrames();
+        gridDisplay.validate();
+        gridDisplay.repaint();
+
     }
     
     public static void main(String[] args) {
