@@ -86,6 +86,8 @@ public class GBTest implements ActionListener{
         
     }
     
+
+    
     public void actionPerformed(ActionEvent event)
     {
         if(event.getSource()==yrAvgBtn1)
@@ -96,7 +98,7 @@ public class GBTest implements ActionListener{
                 gridDisplay.removeAll();
                 buildDefault();
                 studentCol(StudentsStr,2);
-                yrAvgBtn1on= true;
+                yrAvgBtn1on = !yrAvgBtn1on;
             }
             else
             {
@@ -105,8 +107,9 @@ public class GBTest implements ActionListener{
                 
                 gridDisplay.validate();
                 gridDisplay.repaint();
-                //yrAvgBtn1on = false;
+                
               }
+        
         }
         if(event.getSource()==tmAvgBtn2)
         {
@@ -124,6 +127,7 @@ public class GBTest implements ActionListener{
         {
             studentCol(StudentsStr,6);
         }
+    
     }
     
     private void studentCol(String[] strArray, int rowStart)
@@ -164,9 +168,4 @@ public class GBTest implements ActionListener{
         gridDisplay.repaint();
 
     }
-    
-    public static void main(String[] args) {
-        GBTest gbt1 = new GBTest();
-    }
-
 }
