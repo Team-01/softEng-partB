@@ -18,9 +18,9 @@ public class AnalyseResults {
     public void buildContent()
     {
     // Create second tab content
-        GBTest gbt1 = new GBTest();
-        p = gbt1.gridDisplay;
-        sp = new JScrollPane(p);
+        ARoptionsContainer menu = new ARoptionsContainer();
+        menu.setBackground(Color.white);
+        sp = new JScrollPane(menu);
         sp.setBorder(mainStyle.borderScroll);
         sp.getVerticalScrollBar().setUnitIncrement(20); // This is required for smooth scrolling
         
