@@ -49,7 +49,7 @@ public class SQLite
     {
         try {
           Class.forName("org.sqlite.JDBC");
-          c = DriverManager.getConnection("jdbc:sqlite:SE.db");
+          c = DriverManager.getConnection("jdbc:sqlite:src/resources/SE.db");
           System.out.println("Opened database successfully");
           c.setAutoCommit(false);
           
@@ -73,7 +73,7 @@ public class SQLite
       try 
       {
       Class.forName("org.sqlite.JDBC");
-      c = DriverManager.getConnection("jdbc:sqlite:SE.db");
+      c = DriverManager.getConnection("jdbc:sqlite:src/resources/SE.db");
       c.setAutoCommit(false);
       System.out.println("Opened database successfully");
 
