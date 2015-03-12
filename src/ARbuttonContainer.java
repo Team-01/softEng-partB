@@ -44,13 +44,6 @@ public class ARbuttonContainer extends JPanel{
 
     }
     /**
-     * @param args the command line arguments    /**
-     * @param args the command line arguments    /**
-     * @param args the command line arguments    /**
-     * @param args the command line arguments    /**
-     * @param args the command line arguments    /**
-     * @param args the command line arguments    /**
-     * @param args the command line arguments    /**
      * @param args the command line arguments
      */
     
