@@ -5,21 +5,16 @@
  */
 
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
-import javax.swing.UIManager;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -35,11 +30,14 @@ public class ARbuttonDataContainer extends JPanel{
     ImageIcon hArrowHead;
     ImageIcon vArrowHead;
     JToggleButton btnArrowHead;
+    JToggleButton optionBtn;
     public ARbuttonDataContainer()
     {
+        
         inner = new JPanel();
         arrowBox = new JPanel();
         setBackground(Color.white);
+        
         inner.setBackground(Color.white);
         arrowBox.setBackground(Color.white);
         outerLayout = new GridBagLayout();
@@ -62,7 +60,6 @@ public class ARbuttonDataContainer extends JPanel{
                 "resources/hArrow.png"));
         vArrowHead = new ImageIcon(getClass().getClassLoader().getResource(
                 "resources/vArrow.png"));
-        int innerH = inner.getY();
         btnArrowHead= new JToggleButton(hArrowHead);
         btnArrowHead.setSelectedIcon(vArrowHead);
         //btnArrowHead.setBackground(Color.white);
@@ -75,23 +72,63 @@ public class ARbuttonDataContainer extends JPanel{
         arrowBox.add(btnArrowHead);
         this.add(inner);
         
-
+        revalidate();
+    }
+    
+    //public void addOption(Str optionBtn)
+    
+    public JPanel createBtnJPanel(String btnLabel)
+    {
+        //TODO: create a new button using the function
+        //TODO: 
+        optionBtn = createARbtn(btnLabel);
+        GridBagLayout btnLayout;
+        GridBagConstraints gbcBtnLayout;
+        
+        JPanel btnJPanel = new JPanel();
+        btnLayout = new GridBagLayout();
+        
+        gbcBtnLayout = new GridBagConstraints();
+        gbcBtnLayout.weightx = 1.0;
+        gbcBtnLayout.weighty = 1.0;
+        gbcBtnLayout.gridx = 0;
+        gbcBtnLayout.gridy = 0;
+        //gbcBtnLayout.fill = GridBagConstraints.HORIZONTAL;
+        btnJPanel.setBackground(Color.white);
+        btnJPanel.setLayout(btnLayout);
+        btnJPanel.add(optionBtn,gbc);
+        
+        return btnJPanel;
+    }
+    
+    private JToggleButton createARbtn(String btnLabel)
+    {        
+        optionBtn = new JToggleButton(btnLabel);
+        
+        optionBtn.setPreferredSize(new Dimension(500,27));
+        optionBtn.setEnabled(true);
+        optionBtn.setFocusPainted(false); //rm txt border
+        optionBtn.setBorderPainted(false);//rm main border
+        optionBtn.setBackground(Color.white);//rm main border
+        //optionBtn.setContentAreaFilled(false); //rm bg
+        optionBtn.setHorizontalAlignment(SwingConstants.LEFT);
+        
+        return optionBtn;
     }
     
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        ARbuttonContainer optionExample = new ARbuttonContainer("Example button");
-        ARbuttonContainer optionExample2 = new ARbuttonContainer("Example button2");
+        
         ARbuttonDataContainer buttonDataContainer = new ARbuttonDataContainer();
-        ARo1stAvgDataGrid datagrid = new ARo1stAvgDataGrid();
-        //buttonDataContainer.add(inner);
-        buttonDataContainer.inner.add(optionExample);
-        buttonDataContainer.inner.add(datagrid);
-        //datagrid.setVisible(false);
-        //buttonDataContainer.add(optionExample2, BorderLayout.SOUTH);
-        //JFrameForTest jframe = new JFrameForTest();
-        //jframe.add(buttonDataContainer);
+        buttonDataContainer.createBtnJPanel("Example button");
+        buttonDataContainer.inner.add(buttonDataContainer.createBtnJPanel("Example button"));
+        
+        //ARo1stAvgDataGrid datagrid = new ARo1stAvgDataGrid();
+        //buttonDataContainer.inner.add(optionExample);
+        ARjFrameForTest jframe = new ARjFrameForTest();
+        jframe.add(buttonDataContainer);
+
     }
 }

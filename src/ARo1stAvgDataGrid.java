@@ -7,6 +7,7 @@
 
 import static java.awt.BorderLayout.PAGE_START;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import static java.awt.GridBagConstraints.NORTH;
 import java.awt.GridBagLayout;
@@ -41,7 +42,7 @@ public class ARo1stAvgDataGrid extends JPanel
         //grab student data to fill grid with
         data = new ARData();
         studentNames = data.students;
-        
+        this.setMaximumSize(new Dimension(400,400));
         //add to grid
         fillStudentNames(studentNames);
     }

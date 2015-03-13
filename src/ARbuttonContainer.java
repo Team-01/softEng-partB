@@ -39,7 +39,8 @@ public class ARbuttonContainer extends JPanel{
         button.setEnabled(true);
         button.setFocusPainted(false); //rm txt border
         button.setBorderPainted(false);//rm main border
-        button.setContentAreaFilled(false); //rm bg
+        //button.setContentAreaFilled(false); //rm bg
+        button.setBackground(Color.white);
         button.setHorizontalAlignment(SwingConstants.LEFT);
 
     }
@@ -49,7 +50,7 @@ public class ARbuttonContainer extends JPanel{
     
     public static void main(String[] args) {
         ARbuttonContainer optionExample = new ARbuttonContainer("Option example");
-        //JFrameForTest jframe = new JFrameForTest();
-        //jframe.add(optionExample);
+        ARjFrameForTest jframe = new ARjFrameForTest();
+        jframe.add(optionExample);
     }
 }
