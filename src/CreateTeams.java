@@ -9,6 +9,9 @@ public class CreateTeams {
     JScrollPane sp; 
     Style mainStyle = new Style();
     
+    private JPanel buttonPanel = new JPanel();
+    private 
+    
     public CreateTeams()
     {
         // Make main class panel and make it a scrollpane
