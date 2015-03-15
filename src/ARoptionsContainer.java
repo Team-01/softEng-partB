@@ -4,41 +4,62 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 
 /**
  * @author Kit
+ * //TODO: Add proper notes
+ * //TODO: start on AR5inResDataGrid first
+ * //TODO: add mouseover event to button to change shade
  */
-public class ARoptionsContainer extends JPanel implements ActionListener{
+public class ARoptionsContainer extends JPanel implements MouseListener
+{
+    /**
+    * An instance of the Style class for accessing system styles
+    */
+    Style mainStyle = new Style(); 
+        
     private GridBagLayout outerLayout;
     private BoxLayout innerLayout;
- 
-    private ARo1stAvgDataGrid stAvgDataGrid1;
-    private ARo2tmAvgDataGrid tmAvgDataGrid2;
-    private ARo3oaAvgDataGrid oaAvgDataGrid3;
-    private ARo4stComDataGrid stComDataGrid4;
-    private ARo5inResDataGrid inResDataGrid5;
     
-    private JPanel stAvgBtnDataContainer1;
-    private JPanel tmAvgBtnDataContainer2;
-    private JPanel oaAvgBtnDataContainer3;
-    private JPanel stComBtnDataContainer4;
-    private JPanel inResBtnDataContainer5;
+    private JPanel stAvgBtnDataContainer1, tmAvgBtnDataContainer2,
+                   oaAvgBtnDataContainer3, stComBtnDataContainer4,
+                   inResBtnDataContainer5;
+    
+    Color systemLightGrey2 = new Color(227, 227, 227);
     
     /**
      * sets the number of options for arrays to cycle
      */
     int optionInt = 5; 
     
+    /**
+     * array to hold JPanels to hold each option button
+     */
     private JPanel[] options = new JPanel[optionInt];
-    private JToggleButton[] btns = new JToggleButton[optionInt];
+    /**
+     * array to hold JToggleButtons for each option.
+     */
+    private JLabel[] btns = new JLabel[optionInt];
+    /**
+     * array to hold JToggleButtons to display graphic of arrowhead to go
+     * alongside each option button
+     */
     private JToggleButton[] arrowBtns = new JToggleButton[optionInt];
+    /**
+     * 
+     */
     private JPanel[] datagrids = new JPanel[optionInt];
     private JPanel[] datacontainers = new JPanel[optionInt];
     
@@ -47,12 +68,12 @@ public class ARoptionsContainer extends JPanel implements ActionListener{
      * selected so that they can close the option if the same button or arrow
      * are selected
      */
-    private JToggleButton lastBtnSelected;
+    private JLabel lastBtnSelected;
     private JToggleButton lastArrSelected;
     
     public ARoptionsContainer()
-    {
-        lastBtnSelected = new JToggleButton();
+    {        
+        lastBtnSelected = new JLabel();
         lastArrSelected = new JToggleButton();
         outerLayout = new GridBagLayout();
         
@@ -60,6 +81,7 @@ public class ARoptionsContainer extends JPanel implements ActionListener{
         innerLayout = new BoxLayout(innerGrid, BoxLayout.Y_AXIS);
         innerGrid.setLayout(innerLayout);
         
+
         btns[0] = buildBtn
         ("Year averages and Software Engineering module mark for all students");
         btns[1] = buildBtn
@@ -105,11 +127,11 @@ public class ARoptionsContainer extends JPanel implements ActionListener{
                 datacontainers[4],
                 arrowBtns[4]);
         
-        stAvgDataGrid1 = new ARo1stAvgDataGrid();
-        tmAvgDataGrid2 = new ARo2tmAvgDataGrid();
-        oaAvgDataGrid3 = new ARo3oaAvgDataGrid();
-        stComDataGrid4 = new ARo4stComDataGrid();
-        inResDataGrid5 = new ARo5inResDataGrid();
+        datagrids[0] = new ARo1stAvgDataGrid();
+        datagrids[1] = new ARo2tmAvgDataGrid();
+        datagrids[2] = new ARo3oaAvgDataGrid();
+        datagrids[3] = new ARo4stComDataGrid();
+        datagrids[4] = new ARo5inResDataGrid();
 
         innerGrid.setBackground(Color.white);
         innerGrid.add(Box.createRigidArea(new Dimension(0,5)));
@@ -123,52 +145,8 @@ public class ARoptionsContainer extends JPanel implements ActionListener{
         innerGrid.add(Box.createRigidArea(new Dimension(0,3)));
         innerGrid.add(inResBtnDataContainer5);
         innerGrid.add(Box.createRigidArea(new Dimension(0,3)));
-        
-        datagrids[0] = stAvgDataGrid1;
-        datagrids[1] = tmAvgDataGrid2;
-        datagrids[2] = oaAvgDataGrid3;
-        datagrids[3] = stComDataGrid4;
-        datagrids[4] = inResDataGrid5;
 
         add(innerGrid);
-    }
-    
-    public void actionPerformed(ActionEvent event)
-    {
-        Object sourceButton = event.getSource();
-        for (int compNum=0; compNum < options.length; compNum++)
-        {
-            if (btns[compNum] == sourceButton || 
-                arrowBtns[compNum] == sourceButton)
-            {
-                if (lastBtnSelected == btns[compNum] || 
-                    lastArrSelected == arrowBtns[compNum])
-                {
-                    btns[compNum].setSelected(false);
-                    arrowBtns[compNum].setSelected(false);
-                    datacontainers[compNum].remove(datagrids[compNum]);
-                    lastBtnSelected = new JToggleButton();
-                    lastArrSelected = new JToggleButton();
-                }
-                
-                else if (btns[compNum].isSelected() == false || 
-                         arrowBtns[compNum].isSelected() == false)
-                {
-                    datacontainers[compNum].add(datagrids[compNum]);
-                    arrowBtns[compNum].setSelected(true);
-                    btns[compNum].setSelected(true);
-                    lastBtnSelected = btns[compNum];
-                    lastArrSelected = arrowBtns[compNum];
-                }
-            }
-            else
-            {
-                datacontainers[compNum].remove(datagrids[compNum]);
-                btns[compNum].setSelected(false);
-                arrowBtns[compNum].setSelected(false);
-            }
-        }
-        revalidate();
     }
     
     public JPanel buildBtnDataPanel( 
@@ -205,15 +183,18 @@ public class ARoptionsContainer extends JPanel implements ActionListener{
     /**
      * Builds a JPanel to contain and provide a visible border for a 
      * button option and data, which are contained in their own JPanels.
+     * TODO: set colour of frame, may need to add colour to style if desired not
+     * available
      */
-    public JPanel buildInnerPanel(JPanel btnPanel)
+    private JPanel buildInnerPanel(JPanel btnPanel)
     {
         JPanel innerPanel = new JPanel();
         BoxLayout innerPanelLayout = new BoxLayout(innerPanel, BoxLayout.Y_AXIS);
         //FlowLayout innerPanelLayout = new FlowLayout();
         innerPanel.setLayout(innerPanelLayout);
         innerPanel.setBackground(Color.white);
-        innerPanel.setBorder(BorderFactory.createLineBorder(Color.black, 3));
+        innerPanel.setBorder(BorderFactory.createLineBorder
+                                                    (mainStyle.systemColor, 3));
         innerPanel.add(btnPanel);
         return innerPanel;
     }
@@ -236,7 +217,7 @@ public class ARoptionsContainer extends JPanel implements ActionListener{
      * Used to build and return a JPanel containing a button used for one of 
      * the 'Analyse results' options.
      */
-    public JPanel buildBtnJPanel(JToggleButton btn)
+    private JPanel buildBtnJPanel(JLabel btn)
     {
         JPanel btnJPanel = new JPanel();
         
@@ -262,6 +243,8 @@ public class ARoptionsContainer extends JPanel implements ActionListener{
      * @return 
      * Creates and returns a JToggleButton which shows an arrow designed to be
      * placed next to a button made with the buildBtn function.
+     * TODO: look into component class to see if you can draw the triangle in 
+     * java instead, this way it can be coloured dynamically
      */
     private JToggleButton buildBtnArrow()
     {
@@ -281,7 +264,7 @@ public class ARoptionsContainer extends JPanel implements ActionListener{
         btnArrowHead.setPreferredSize(new Dimension (45,40));
         btnArrowHead.setFocusPainted(false); //rm txt border
         btnArrowHead.setBorderPainted(false);
-        btnArrowHead.addActionListener(this);
+        btnArrowHead.addMouseListener(this);
         //btnArrowHead.setVerticalAlignment(0);
         btnArrowHead.setContentAreaFilled(false);//rm bg
         
@@ -292,23 +275,129 @@ public class ARoptionsContainer extends JPanel implements ActionListener{
      * @param btnLabel desired label for button
      * @return optionBtn
      * Creates and returns a button used for 'Analyse results' options.
+     * TODO: alter fonts - use the ones set in the Style class to match program
      */
-    private JToggleButton buildBtn(String btnLabel)
+    private JLabel buildBtn(String btnLabel)
     {        
-        JToggleButton optionBtn = new JToggleButton(btnLabel);
-        
-        optionBtn.setPreferredSize(new Dimension(500,27));
-        
-        optionBtn.setEnabled(true);
-        optionBtn.setFocusPainted(false); //rm txt border
-        optionBtn.setBorderPainted(false);//rm main border
+        JLabel optionBtn = new JLabel(btnLabel);
+        //MotionMouseListener mouseOver = new MotionMouseListener();
+        optionBtn.setPreferredSize(new Dimension(570,27));
+       
+        //optionBtn.setEnabled(true);
+        //optionBtn.setFocusPainted(false); //rm txt border
+        //optionBtn.setBorderPainted(false);//rm main border
+        optionBtn.setOpaque(true);
         optionBtn.setBackground(Color.white);
+        
         //optionBtn.setContentAreaFilled(false); //rm bg altogether
         optionBtn.setHorizontalAlignment(SwingConstants.LEFT);
         //optionBtn.setRolloverEnabled(true);
-        optionBtn.addActionListener(this);
+        optionBtn.addMouseListener(this);
+        //optionBtn.addMouseListener(new btnMouseListener());
+        optionBtn.setFont(mainStyle.fontM);
+        optionBtn.setForeground(mainStyle.systemExtraDarkGrey);
         return optionBtn;
     }
+
+    @Override
+    public void mouseClicked(MouseEvent event) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent event) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent event) {
+        Object sourceButton = event.getSource();
+        for (int compNum=0; compNum < options.length; compNum++)
+        {
+            if (btns[compNum] == sourceButton || 
+                arrowBtns[compNum] == sourceButton)
+            {
+                if (lastBtnSelected == btns[compNum] || 
+                    lastArrSelected == arrowBtns[compNum])
+                {
+                    //btns[compNum].setSelected(false);
+                    arrowBtns[compNum].setSelected(false);
+                    datacontainers[compNum].remove(datagrids[compNum]);
+                    btns[compNum].setBackground(Color.white);
+                    btns[compNum].setForeground(mainStyle.systemExtraDarkGrey);
+                    lastBtnSelected = new JLabel();
+                    lastArrSelected = new JToggleButton();
+                }
+                
+                else //if (btns[compNum].isSelected() == false || 
+                     //    arrowBtns[compNum].isSelected() == false)
+                {
+                    datacontainers[compNum].add(datagrids[compNum]);
+                    arrowBtns[compNum].setSelected(true);
+                    //btns[compNum].setSelected(false);
+                    btns[compNum].setBackground(mainStyle.systemDarkGrey);
+                    btns[compNum].setForeground(Color.black);
+                    lastBtnSelected = btns[compNum];
+                    lastArrSelected = arrowBtns[compNum];
+                }
+            }
+            else
+            {
+                datacontainers[compNum].remove(datagrids[compNum]);
+                //btns[compNum].setSelected(false);
+                btns[compNum].setBackground(Color.white);
+                btns[compNum].setForeground(mainStyle.systemExtraDarkGrey);
+                arrowBtns[compNum].setSelected(false);
+                
+            }
+        }
+        revalidate();
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent event) {
+        for (int compNum=0; compNum < options.length; compNum++)
+        {
+            if (event.getSource() == btns[compNum] || 
+            event.getSource() == arrowBtns[compNum])
+            {
+                JLabel btn = btns[compNum];
+                if(btn.getBackground() == mainStyle.systemDarkGrey)
+                {
+                    btns[compNum].setBackground(systemLightGrey2);
+                }
+                else
+                {
+                    btns[compNum].setBackground(mainStyle.systemLightGrey);
+                }
+            }
+        }
+        //revalidate();
+    }
+
+    @Override
+    public void mouseExited(MouseEvent event) 
+    {
+        for (int compNum=0; compNum < options.length; compNum++)
+        {
+            if (event.getSource() == btns[compNum] || 
+            event.getSource() == arrowBtns[compNum])
+            {
+                JLabel btn = btns[compNum];
+                if(btn.getBackground() == mainStyle.systemLightGrey)
+                {
+                    btns[compNum].setBackground(Color.white);
+                }
+                else if(btn.getBackground() == systemLightGrey2)
+                {
+                    btns[compNum].setBackground(mainStyle.systemDarkGrey);
+                }
+            }
+        }
+        //revalidate();
+    }
+    
+        
     /**
      * @param args the command line arguments
      */
