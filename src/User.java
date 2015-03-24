@@ -8,7 +8,15 @@
  *
  * @author greench
  */
-public class SomeTestClass
+public class User
 {
+    String ID;
+    String firstName;
+    String lastName;
+    int groupOrder;
     
+    public User()
+    {
+        
+    }
 }
