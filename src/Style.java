@@ -39,7 +39,7 @@ public class Style extends JFrame
     
     EmptyBorder border30 = new EmptyBorder(30, 30, 30, 30); 
     EmptyBorder border20 = new EmptyBorder(20, 20, 20, 20); 
-    EmptyBorder border10 = new EmptyBorder(15, 15, 15, 15);
+    EmptyBorder border10 = new EmptyBorder(10, 10, 10, 10);
     EmptyBorder borderScroll = new EmptyBorder(0,0,0,0); 
     
     
