@@ -8,8 +8,6 @@ public class SQLite
         selectQuestions();
         selectSettings();
         selectStudents();
-        
-        
     }
     
     Connection c = null;
@@ -29,6 +27,9 @@ public class SQLite
     
     ArrayList<String> studentsID = new ArrayList<String>();
     ArrayList<String> studentsStuID = new ArrayList<String>();
+    ArrayList<String> studentsStuName = new ArrayList<String>();
+    ArrayList<String> studentsStuPhone = new ArrayList<String>();
+    ArrayList<String> studentsStuEmail = new ArrayList<String>();
     ArrayList<String> studentsMemberOfTeam = new ArrayList<String>();
     ArrayList<String> studentsPreviousSubject = new ArrayList<String>();
     ArrayList<String> studentsTrSH = new ArrayList<String>();
@@ -169,6 +170,9 @@ public class SQLite
         {
             studentsID.clear();
             studentsStuID.clear();
+            studentsStuName.clear();
+            studentsStuPhone.clear();
+            studentsStuEmail.clear();
             studentsMemberOfTeam.clear();
             studentsPreviousSubject.clear();
             studentsTrSH.clear();
@@ -192,6 +196,9 @@ public class SQLite
             {
                 studentsID.add(results.getString("ID"));
                 studentsStuID.add(results.getString("stuID"));
+                studentsStuName.add(results.getString("stuName"));
+                studentsStuPhone.add(results.getString("stuPhone"));
+                studentsStuEmail.add(results.getString("stuEmail"));
                 studentsMemberOfTeam.add(results.getString("memberOfTeam"));
                 studentsPreviousSubject.add(results.getString("previousSubject"));
                 studentsTrSH.add(results.getString("trSH"));

@@ -16,9 +16,16 @@ public class Questionnaire {
     // Create an array list of all button groups, so can be used in action listener for resetting questionnaire
     ArrayList<ButtonGroup> allButtonGroups = new ArrayList<ButtonGroup>();
     JTextField textStuID;
-    JTextField textStuPrevSubject;
-    String currentStudent;
-    
+    JTextField textStuName;
+    JComboBox cbStuSubject;
+    JTextField textStuPhone;
+    JTextField textStuEmail;
+    String currentStudentID;
+    String currentStudentName;
+    String currentStudentPhone;
+    String currentStudentEmail;
+    // Create array list of all previous subjects to be shown in combobox
+    ArrayList<String> prevSubjects = new ArrayList<String>();
     
     public Questionnaire()
     {
@@ -35,6 +42,15 @@ public class Questionnaire {
         GridBagConstraints gbc1 = new GridBagConstraints();
         gbc1.insets = new Insets(5, 5, 5, 5);
         
+        // Fill previous subjects array list
+        prevSubjects.add("Business");
+        prevSubjects.add("Engineering");
+        prevSubjects.add("Science");
+        prevSubjects.add("Art");
+        prevSubjects.add("Technology");
+        prevSubjects.add("Humanities");
+        
+        
         // Create the pStuInfo panel
         gbc1.gridy = 0;
         JPanel pStuInfo = new JPanel();
@@ -42,26 +58,55 @@ public class Questionnaire {
         EmptyBorder borderStuID = new EmptyBorder(20, 30, 20, 30);
         pStuInfo.setBorder(borderStuID);
         
-        // Create stu ID label + text fields
-        JLabel labelStuID = new JLabel("Student ID:");
+        // Create stu ID label + text field
+        JLabel labelStuID = new JLabel("Stu ID:");
         labelStuID.setForeground(mainStyle.systemExtraDarkGrey);
         textStuID = new JTextField("e.g. C0815038");
-        textStuID.setPreferredSize( new Dimension( 140, 24 ) );
+        textStuID.setPreferredSize( new Dimension( 110, 25 ) );
         //Empty text field when clicked on
         textStuID.addMouseListener(new MouseAdapter(){@Override public void mouseClicked(MouseEvent e){textStuID.setText("");}});
         
-        // Create background subject label + text fields
-        JLabel labelStuPrevSubject = new JLabel("      Previous Subject Area:");
-        labelStuPrevSubject.setForeground(mainStyle.systemExtraDarkGrey);
-        textStuPrevSubject = new JTextField("E.g. Business/Art/Science");
-        textStuPrevSubject.setPreferredSize( new Dimension( 240, 24 ) );
+        // Create stu Name label + text field
+        JLabel labelStuName = new JLabel("  Name:");
+        labelStuName.setForeground(mainStyle.systemExtraDarkGrey);
+        textStuName = new JTextField("e.g. Joe Bloggs");
+        textStuName.setPreferredSize( new Dimension( 120, 25 ) );
         //Empty text field when clicked on
-        textStuPrevSubject.addMouseListener(new MouseAdapter(){@Override public void mouseClicked(MouseEvent e){textStuPrevSubject.setText("");}});
+        textStuName.addMouseListener(new MouseAdapter(){@Override public void mouseClicked(MouseEvent e){textStuName.setText("");}});
         
-            
+        // Create background subject label + combo box fields
+        JLabel labelStuPrevSubject = new JLabel("   Previous Subject:");
+        labelStuPrevSubject.setForeground(mainStyle.systemExtraDarkGrey);
+        cbStuSubject = new JComboBox();
+        for (String subject:prevSubjects)
+        {
+            cbStuSubject.addItem(subject);
+        }
+        
+        // Create stu Phone label + text field
+        JLabel labelStuPhone = new JLabel("  Phone:");
+        labelStuPhone.setForeground(mainStyle.systemExtraDarkGrey);
+        textStuPhone = new JTextField("e.g. 07860838577");
+        textStuPhone.setPreferredSize( new Dimension( 140, 25 ) );
+        //Empty text field when clicked on
+        textStuPhone.addMouseListener(new MouseAdapter(){@Override public void mouseClicked(MouseEvent e){textStuPhone.setText("");}});
+        
+        // Create stu Name label + text field
+        JLabel labelStuEmail = new JLabel("  Email:");
+        labelStuEmail.setForeground(mainStyle.systemExtraDarkGrey);
+        textStuEmail = new JTextField("e.g. joebloggs@email.com");
+        textStuEmail.setPreferredSize( new Dimension( 190, 25 ) );
+        //Empty text field when clicked on
+        textStuEmail.addMouseListener(new MouseAdapter(){@Override public void mouseClicked(MouseEvent e){textStuEmail.setText("");}});
+        
+        
+        
         // Add text fields and labels to pStuInfo panel
-        pStuInfo.add(labelStuID); pStuInfo.add(textStuID); // add to stu id panel
-        pStuInfo.add(labelStuPrevSubject); pStuInfo.add(textStuPrevSubject);
+        pStuInfo.add(labelStuID); pStuInfo.add(textStuID); 
+        pStuInfo.add(labelStuName); pStuInfo.add(textStuName);
+        pStuInfo.add(labelStuPrevSubject); pStuInfo.add(cbStuSubject);
+        pStuInfo.add(labelStuPhone); pStuInfo.add(textStuPhone);
+        pStuInfo.add(labelStuEmail); pStuInfo.add(textStuEmail);
         p.add(pStuInfo, gbc1); // add stu id panel to p
         
         
@@ -197,8 +242,11 @@ public class Questionnaire {
                     }
                     else
                     {
-                        // update value of currentStudent variable
-                        currentStudent = textStuID.getText();
+                        // variables for getting the text from student info text fields
+                        currentStudentID = textStuID.getText();
+                        currentStudentName = textStuName.getText();
+                        currentStudentPhone = textStuPhone.getText();
+                        currentStudentEmail = textStuEmail.getText();
 
                         // Create variables to hold scores for each TeamRole
                         int SHscore = 0; int IMPscore = 0; int CFscore = 0;
@@ -243,15 +291,16 @@ public class Questionnaire {
 
 
                         // Create a record for currentStudent in students table within DB with number and TeamRole scores
-                        db.modify("INSERT INTO students (stuID, previousSubject, trSH, trIMP, trCF, trCO, trTW, trRI, trPL, trME, trSP)"
-                                + "VALUES ('"+currentStudent+"', '"+textStuPrevSubject.getText()+"', "+SHscore+", "+IMPscore+", "+CFscore+", "+COscore+", "+TWscore
+                        db.modify("INSERT INTO students (stuID, stuName, stuPhone, stuEmail, previousSubject, trSH, trIMP, trCF, trCO, trTW, trRI, trPL, trME, trSP)"
+                                + "VALUES ('"+currentStudentID+"', '"+currentStudentName+"', '"+currentStudentPhone+"', '"+currentStudentEmail+"','"+cbStuSubject.getSelectedItem()+"', "
+                                +SHscore+", "+IMPscore+", "+CFscore+", "+COscore+", "+TWscore
                                 +","+RIscore+", "+PLscore+", "+MEscore+", "+SPscore+")");
 
 
                         // run test if student answered agree or strongly agree to programming test
                         if (allButtons.get(allButtons.size()-1).isSelected() || allButtons.get(allButtons.size()-2).isSelected())
                         {
-                            Test test = new Test(currentStudent);
+                            Test test = new Test(currentStudentID);
                             test.setVisible(true);
                         }
                         // else show 'questionnaire complete' confirmation box
@@ -264,9 +313,12 @@ public class Questionnaire {
 
                         // Reset questionnaire
 
-                        // Reset text field content
+                        // Reset top text field content
                             textStuID.setText("e.g. C0815038");
-                            textStuPrevSubject.setText("e.g. Business/Art/Science");
+                            textStuName.setText("e.g. Joe Bloggs");
+                            cbStuSubject.setSelectedIndex(0);
+                            textStuPhone.setText("e.g. 07860838577");
+                            textStuEmail.setText("e.g. joebloggs@email.com");
 
                         // Clear selection of all button groups
                         for (ButtonGroup bg:allButtonGroups)
