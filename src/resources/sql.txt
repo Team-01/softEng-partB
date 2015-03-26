@@ -4,12 +4,30 @@
 
 ---------------- SQL for creating the 3 tables: students, questions, settings ---------------- 
 
-CREATE TABLE students (ID INTEGER PRIMARY KEY, stuID VARCHAR(10) NOT NULL UNIQUE, memberOfTeam VARCHAR(20), previousSubject VARCHAR(100) NOT NULL, trSH INTEGER NOT NULL, trIMP INTEGER NOT NULL, trCF INTEGER NOT NULL,
+CREATE TABLE students (ID INTEGER PRIMARY KEY, stuID VARCHAR(10) NOT NULL UNIQUE, stuName VARCHAR(200) NOT NULL, stuPhone VARCHAR(20), stuEmail VARCHAR(200), memberOfTeam VARCHAR(20), previousSubject VARCHAR(100) NOT NULL, trSH INTEGER NOT NULL, trIMP INTEGER NOT NULL, trCF INTEGER NOT NULL,
 trCO INTEGER NOT NULL, trTW INTEGER NOT NULL, trRI INTEGER NOT NULL, trPL INTEGER NOT NULL, trME INTEGER NOT NULL, trSP INTEGER NOT NULL, testScore INTEGER, moduleMark INTEGER, averageMark INTEGER);
 
 CREATE TABLE questions (ID INTEGER PRIMARY KEY, number VARCHAR(2) NOT NULL, question VARCHAR(100) NOT NULL, quesOrTest VARCHAR(5) NOT NULL);
 
 CREATE TABLE settings (ID INTEGER PRIMARY KEY, adminPassword VARCHAR(30) NOT NULL, colorR INTEGER NOT NULL, colorG INTEGER NOT NULL, colorB INTEGER NOT NULL);
+
+
+
+
+
+------------------- SQL for loading sample students-------------------    
+
+INSERT INTO students (stuID, stuName, stuPhone, stuEmail, previousSubject, trSH, trIMP, trCF, trCO, trTW, trRI, trPL, trME, trSP, testScore, moduleMark, averageMark)
+VALUES ("C0815038", "Mike Allaway", "07860838577", "mikeallaway@gmail.com", "Business", 1, 2, 3, 4, 5, 6, 7, 8, 9, 2, 60, 70);
+
+INSERT INTO students (stuID, stuName, stuPhone, stuEmail, previousSubject, trSH, trIMP, trCF, trCO, trTW, trRI, trPL, trME, trSP, testScore, moduleMark, averageMark)
+VALUES ("C0915949", "Kit Rothwell", "07860204777", "kit@gmail.com", "Science", 1, 9, 2, 4, 4, 6, 7, 4, 9, 3, 65, 70);
+
+INSERT INTO students (stuID, stuName, stuPhone, stuEmail, previousSubject, trSH, trIMP, trCF, trCO, trTW, trRI, trPL, trME, trSP, testScore, moduleMark, averageMark)
+VALUES ("C9382038", "Chris Green", "077339284577", "chris@hotmail.com", "Art", 3, 10, 1, 4, 5, 2, 7, 8, 1, 2, 50, 80);
+
+INSERT INTO students (stuID, stuName, stuPhone, stuEmail, previousSubject, trSH, trIMP, trCF, trCO, trTW, trRI, trPL, trME, trSP, testScore, moduleMark, averageMark)
+VALUES ("C2332099", "Arnaud Escalant", "077902984577", "arno@email.com", "Art", 3, 1, 1, 9, 5, 4, 5, 2, 9, 1, 60, 60);
 
 
 
@@ -37,6 +55,9 @@ INSERT INTO questions (number, question, quesOrTest) VALUES ("17", "I like to fo
 INSERT INTO questions (number, question, quesOrTest) VALUES ("18", "I would rather concentrate on my own work than the big picture.", "q");
 INSERT INTO questions (number, question, quesOrTest) VALUES ("19", "I have previous programming knowledge and/or experience.", "q");
 
+INSERT INTO questions (number, question, quesOrTest) VALUES ("20", "Is the Java expression 'int mynum = 27.89;' a valid one?", "t");
+INSERT INTO questions (number, question, quesOrTest) VALUES ("21", "Is C# the language used for querying databases?", "t");
+INSERT INTO questions (number, question, quesOrTest) VALUES ("22", "Does the Python expression 'count ++' increase the value of count by 1?", "t");
 
 
 
