@@ -10,10 +10,9 @@ public class ManageStudents
     JPanel p;
     JScrollPane sp;
     Style mainStyle = new Style();
-    SQLite db = new SQLite();
     JPanel tableP;
     
-    public ManageStudents(SE se)
+    public ManageStudents(final SE se)
     {
         // Make main class panel and make it a scrollpane
         JPanel p = new JPanel();
@@ -55,20 +54,20 @@ public class ManageStudents
             headerP.add(header);
         }
         
-        for (int stuCount = 0; stuCount < db.studentsID.size(); stuCount++)
+        for (int stuCount = 0; stuCount < se.db.studentsID.size(); stuCount++)
         {
             final JPanel studentP = new JPanel(new GridLayout(0,7));
             studentP.setBackground(Color.white);
             studentP.setBorder(mainStyle.borderCustom(2, 2, 2, 2));
             tableP.add(studentP);
             
-            final String currentID = db.studentsStuID.get(stuCount);
+            final String currentID = se.db.studentsStuID.get(stuCount);
             
             final JTextField ID = new JTextField(currentID);
-            final JTextField Name = new JTextField(db.studentsStuName.get(stuCount));
-            final JTextField Team = new JTextField(db.studentsMemberOfTeam.get(stuCount));
-            final JTextField ModuleMark = new JTextField(db.studentsModuleMark.get(stuCount));
-            final JTextField AverageMark = new JTextField(db.studentsAverageMark.get(stuCount));
+            final JTextField Name = new JTextField(se.db.studentsStuName.get(stuCount));
+            final JTextField Team = new JTextField(se.db.studentsMemberOfTeam.get(stuCount));
+            final JTextField ModuleMark = new JTextField(se.db.studentsModuleMark.get(stuCount));
+            final JTextField AverageMark = new JTextField(se.db.studentsAverageMark.get(stuCount));
             
             // Add buttons
             JButton Delete = new JButton("Delete");
@@ -78,7 +77,7 @@ public class ManageStudents
                 public void actionPerformed(ActionEvent e) 
                 {
                     // Remove student from DB
-                    db.modify("DELETE FROM students WHERE stuID='"+currentID+"';");
+                    se.db.modify("DELETE FROM students WHERE stuID='"+currentID+"';");
                     
                     // Remove from panel and repaint
                     tableP.remove(studentP);
@@ -95,7 +94,7 @@ public class ManageStudents
                 public void actionPerformed(ActionEvent e) 
                 {
                     // Update DB record for current student
-                    db.modify("UPDATE students SET stuID='"+ID.getText()+"', stuName='"+Name.getText()+"',"
+                    se.db.modify("UPDATE students SET stuID='"+ID.getText()+"', stuName='"+Name.getText()+"',"
                             + "memberOfTeam='"+Team.getText()+"', moduleMark='"+ModuleMark.getText()+"', "
                             + "averageMark='"+AverageMark.getText()+"'"
                             + "WHERE stuID='"+currentID+"';");
