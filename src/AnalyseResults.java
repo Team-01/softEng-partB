@@ -10,7 +10,7 @@ public class AnalyseResults {
     
     Style mainStyle = new Style();
     
-    public AnalyseResults()
+    public AnalyseResults(SE se)
     {
         buildContent();
     }

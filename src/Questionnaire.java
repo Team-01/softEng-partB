@@ -27,7 +27,7 @@ public class Questionnaire {
     // Create array list of all previous subjects to be shown in combobox
     ArrayList<String> prevSubjects = new ArrayList<String>();
     
-    public Questionnaire()
+    public Questionnaire(SE se)
     {
    
         // Make the panel and GBC

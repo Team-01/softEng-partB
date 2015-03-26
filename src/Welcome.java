@@ -9,7 +9,7 @@ public class Welcome
     JScrollPane sp;
     Style mainStyle = new Style();
     
-    public Welcome()
+    public Welcome(SE se)
     {
         // Make main class panel and make it a scrollpane
         JPanel p = new JPanel(new GridBagLayout());
