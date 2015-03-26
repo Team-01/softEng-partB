@@ -35,14 +35,14 @@ public class SE extends JFrame
         
         
         // Make the tabs (objects of the different use case classes)
-        Welcome WelcomePane = new Welcome();
-        Questionnaire UseCase1 = new Questionnaire();
-        CreateTeams UseCase2 = new CreateTeams();
-        ViewTeams UseCase3 = new ViewTeams();
-        AnalyseResults UseCase4 = new AnalyseResults();
-        ManageQuestions ExtraFeature1 = new ManageQuestions();
-        ManageStudents ExtraFeature2 = new ManageStudents();
-        Settings ExtraFeature3 = new Settings();
+        Welcome WelcomePane = new Welcome(this);
+        Questionnaire UseCase1 = new Questionnaire(this);
+        CreateTeams UseCase2 = new CreateTeams(this);
+        ViewTeams UseCase3 = new ViewTeams(this);
+        AnalyseResults UseCase4 = new AnalyseResults(this);
+        ManageQuestions ExtraFeature1 = new ManageQuestions(this);
+        ManageStudents ExtraFeature2 = new ManageStudents(this);
+        Settings ExtraFeature3 = new Settings(this);
         
         
         // Add the tabs to the Tabbed Pane

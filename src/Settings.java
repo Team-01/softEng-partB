@@ -11,7 +11,7 @@ public class Settings
     Style mainStyle = new Style();
     SQLite db = new SQLite();
     
-    public Settings()
+    public Settings(SE se)
     {
         // Make main class panel and make it a scrollpane
         JPanel p = new JPanel(new GridLayout(0, 3));
