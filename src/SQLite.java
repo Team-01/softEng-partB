@@ -45,6 +45,12 @@ public class SQLite
     ArrayList<String> studentsModuleMark = new ArrayList<String>();
     ArrayList<String> studentsAverageMark = new ArrayList<String>();
    
+    public void refresh()
+    {
+        selectStudents();
+        selectQuestions();
+        selectSettings();
+    }
        
     public void modify(String sql)
     {
@@ -61,7 +67,8 @@ public class SQLite
           c.commit();
           c.close();
         }
-          catch ( Exception e ) {
+          catch ( Exception e ) 
+        {
           System.err.println( e.getClass().getName() + ": " + e.getMessage() );
           System.exit(0);
         }
@@ -145,7 +152,7 @@ public class SQLite
             questionsQuesOrTest.clear();
         }
         
-        ResultSet results = selectStart("SELECT * FROM questions;");
+        ResultSet results = selectStart("SELECT * FROM questions ORDER BY ID;");
         try
         {
             while (results.next())
@@ -189,7 +196,7 @@ public class SQLite
             studentsAverageMark.clear();
         }
         
-        ResultSet results = selectStart("SELECT * FROM students;");
+        ResultSet results = selectStart("SELECT * FROM students ORDER BY ID;");
         try
         {
             while (results.next())
