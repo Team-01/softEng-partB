@@ -1,5 +1,4 @@
 import java.util.*;
-import javax.swing.border.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -25,7 +24,7 @@ public class CreateTeams {
         Students = getFakeStudents(rand.nextInt(16)+10);
 
         // Make main class panel and make it a scrollpane
-        JPanel p = new JPanel();
+        JPanel p = new JPanel(new GridBagLayout());
         p.setBackground(Color.white);
         p.setBorder(mainStyle.border20);
 
@@ -39,13 +38,21 @@ public class CreateTeams {
         comboNumTeams.setActionCommand(strComboNumTeams);
         comboNumTeams.addActionListener(new listenerButtons());
         panelButtons.add(comboNumTeams, BorderLayout.EAST);
+                
+        GridBagConstraints gbcPanelLists = new GridBagConstraints();
+        gbcPanelLists.anchor = GridBagConstraints.PAGE_START;
+        gbcPanelLists.gridy = 0;
+        gbcPanelLists.weighty = 0.5;
+        gbcPanelLists.insets = new Insets(0, 10, 10, 0);
         
-        JPanel myPanel = new JPanel(new BorderLayout());
-       
+        GridBagConstraints gbcPanelButtons = new GridBagConstraints();
+        gbcPanelButtons.anchor = GridBagConstraints.FIRST_LINE_END;
+        gbcPanelButtons.gridy = 0;
+        gbcPanelButtons.weighty = 0.5;
+        gbcPanelButtons.insets = new Insets(0, 10, 10, 0);
         
-        myPanel.add(panelButtons, BorderLayout.EAST);
-        myPanel.add(panelLists, BorderLayout.CENTER);
-        p.add(myPanel);        
+        p.add(panelLists, gbcPanelLists);
+        p.add(panelButtons, gbcPanelButtons);
         
         sp = new JScrollPane(p);
         sp.setBorder(mainStyle.borderScroll);
