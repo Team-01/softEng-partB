@@ -16,7 +16,7 @@ public class ManageQuestions
     // Add arraylist of textfields (for accessing later to update DB)
     ArrayList<JTextField> questionsTF = new ArrayList<JTextField>();
     
-    public ManageQuestions()
+    public ManageQuestions(SE se)
     {
         // Make main class panel and make it a scrollpane
         JPanel p = new JPanel();

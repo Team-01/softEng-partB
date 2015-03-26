@@ -13,7 +13,7 @@ public class ManageStudents
     SQLite db = new SQLite();
     JPanel tableP;
     
-    public ManageStudents()
+    public ManageStudents(SE se)
     {
         // Make main class panel and make it a scrollpane
         JPanel p = new JPanel();

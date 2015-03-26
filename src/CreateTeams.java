@@ -18,7 +18,7 @@ public class CreateTeams {
     public ArrayList<Student> Students;
         
     
-    public CreateTeams()
+    public CreateTeams(SE se)
     {
         Random rand = new Random();
         Students = getFakeStudents(rand.nextInt(16)+10);
@@ -62,11 +62,15 @@ public class CreateTeams {
         //also fires the event and populates the right number
         //of lists
         comboNumTeams.setSelectedIndex(3);
+        
     }
     
-    private ArrayList<Student> getStudents()
+    private ArrayList<Student> convertStudentArraysToObjects()
     {
         ArrayList<Student> Students = new ArrayList();
+        
+        //for (int i = 0; i < )
+        
         return Students;
     }
     

@@ -15,7 +15,7 @@ public class ViewTeams extends JFrame
     int teamNumber = 6;                                                         //Team Number variable
     int counter = 0;                                                            //Counter for Number of teams
     
-    public ViewTeams()
+    public ViewTeams(SE se)
     {
         // Make main class panel and make it a scrollpane
         JPanel p = new JPanel();
