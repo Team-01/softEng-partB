@@ -10,7 +10,6 @@ public class Questionnaire {
     JScrollPane sp;
     
     Style mainStyle = new Style();  // Create an instance of the Style class for accessing system styles
-    SQLite db = new SQLite(); // Create an instance of SQLite class for working on database
     // Create an array list of all buttons (so 95 in total: 5 buttons * 19 questons) to feed answer to database
     ArrayList<JRadioButton> allButtons = new ArrayList<JRadioButton>();
     // Create an array list of all button groups, so can be used in action listener for resetting questionnaire
@@ -27,7 +26,7 @@ public class Questionnaire {
     // Create array list of all previous subjects to be shown in combobox
     ArrayList<String> prevSubjects = new ArrayList<String>();
     
-    public Questionnaire(SE se)
+    public Questionnaire(final SE se)
     {
    
         // Make the panel and GBC
@@ -139,9 +138,9 @@ public class Questionnaire {
         int gridCountQuestion = 0; // a count to ensure each question is printed beneath the previous
         
         // Use selectQuestions method on database to fill the questions arrayLists with data
-        db.selectQuestions();
+        se.db.selectQuestions();
         
-        while (qCount < db.questionsID.size()-3)
+        while (qCount < se.db.questionsID.size()-3)
         {
             // Create a panel for each Q box
             JPanel pQBox = new JPanel(new GridLayout(0,1));
@@ -156,7 +155,7 @@ public class Questionnaire {
             pAnswers.setBackground(Color.white);
             
             // Create question (set it to bold) and add to panel
-            JLabel question = new JLabel("Q"+db.questionsNumber.get(qCount)+". "+db.questionsQuestion.get(qCount));
+            JLabel question = new JLabel("Q"+se.db.questionsNumber.get(qCount)+". "+se.db.questionsQuestion.get(qCount));
             question.setFont(mainStyle.fontM);
             question.setForeground(mainStyle.systemColor);
             pQuestion.add(question, gbc2);
@@ -200,12 +199,9 @@ public class Questionnaire {
         EmptyBorder borderSubmitQ = new EmptyBorder(10, 20, 40, 20);
         pSubmitQ.setBorder(borderSubmitQ);
         JButton bSubmitQ = new JButton("Submit");
-        bSubmitQ.addActionListener(new questionnaireSubmit());
         pSubmitQ.add(bSubmitQ, BorderLayout.EAST);
         p.add(pSubmitQ, gbc1);
-    }
-    
-    class questionnaireSubmit implements ActionListener
+        bSubmitQ.addActionListener(new ActionListener()
         {
             /* This action listener:
                 
@@ -234,8 +230,8 @@ public class Questionnaire {
                 {
                     
                     // finds if stu ID is unique
-                    db.selectStudents();
-                    if (db.studentsStuID.contains(textStuID.getText()) == true)
+                    se.db.selectStudents();
+                    if (se.db.studentsStuID.contains(textStuID.getText()) == true)
                     {
                         // Custom method in style class for creating consistently styled pop-up boxes
                         mainStyle.createPopUpFrame("The Student ID you entered already exists.", 350, 150);
@@ -291,7 +287,7 @@ public class Questionnaire {
 
 
                         // Create a record for currentStudent in students table within DB with number and TeamRole scores
-                        db.modify("INSERT INTO students (stuID, stuName, stuPhone, stuEmail, previousSubject, trSH, trIMP, trCF, trCO, trTW, trRI, trPL, trME, trSP)"
+                        se.db.modify("INSERT INTO students (stuID, stuName, stuPhone, stuEmail, previousSubject, trSH, trIMP, trCF, trCO, trTW, trRI, trPL, trME, trSP)"
                                 + "VALUES ('"+currentStudentID+"', '"+currentStudentName+"', '"+currentStudentPhone+"', '"+currentStudentEmail+"','"+cbStuSubject.getSelectedItem()+"', "
                                 +SHscore+", "+IMPscore+", "+CFscore+", "+COscore+", "+TWscore
                                 +","+RIscore+", "+PLscore+", "+MEscore+", "+SPscore+")");
@@ -335,7 +331,8 @@ public class Questionnaire {
                 
             }
             
-            
-        }
-        
+         
+        });
+    }
+
 }

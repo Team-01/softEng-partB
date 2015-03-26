@@ -9,14 +9,13 @@ public class ManageQuestions
     JPanel p;
     JScrollPane sp;
     Style mainStyle = new Style();
-    SQLite db = new SQLite();
     
     // Get list of teamroles for cycling through
     ArrayList<String> teamroles = new ArrayList<String>();
     // Add arraylist of textfields (for accessing later to update DB)
     ArrayList<JTextField> questionsTF = new ArrayList<JTextField>();
     
-    public ManageQuestions(SE se)
+    public ManageQuestions(final SE se)
     {
         // Make main class panel and make it a scrollpane
         JPanel p = new JPanel();
@@ -84,7 +83,7 @@ public class ManageQuestions
             posP.add(trLPos);
 
             // Uses the text fields from the arraylist questionsTF
-            questionsTF.get(count).setText(db.questionsQuestion.get(count));
+            questionsTF.get(count).setText(se.db.questionsQuestion.get(count));
             questionsTF.get(count).setPreferredSize(new Dimension(700, 25));
             posP.add(questionsTF.get(count));
       
@@ -100,7 +99,7 @@ public class ManageQuestions
             trLNeg.setForeground(mainStyle.systemDarkGrey);
             negP.add(trLNeg);
             
-            questionsTF.get(count).setText(db.questionsQuestion.get(count));
+            questionsTF.get(count).setText(se.db.questionsQuestion.get(count));
             questionsTF.get(count).setPreferredSize(new Dimension(700, 25));
             negP.add(questionsTF.get(count));
       
@@ -123,7 +122,7 @@ public class ManageQuestions
                     String newQuestion = questionsTF.get(updateCount).getText().replaceAll("'", "");
                     int quesNum = updateCount + 1;
                     
-                    db.modify("UPDATE questions SET question='"+newQuestion+"' WHERE number="+quesNum+";");
+                    se.db.modify("UPDATE questions SET question='"+newQuestion+"' WHERE number="+quesNum+";");
 
                     System.out.println(newQuestion);
                 }
