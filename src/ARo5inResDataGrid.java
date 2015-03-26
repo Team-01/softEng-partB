@@ -615,7 +615,7 @@ public class ARo5inResDataGrid extends JPanel implements MouseListener
         gbc.gridwidth=1;
         
         this.add(menuLvl1Panel, gbc);
-        gbc.insets = new Insets(0,50,0,100);
+        gbc.insets = new Insets(10,50,0,100);
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.NORTHWEST;
         this.add(dataViewLvl1Panel, gbc);
