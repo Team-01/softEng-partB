@@ -518,7 +518,8 @@ public class ARo5inResDataGrid extends JPanel implements MouseListener
     {
         if (!enterModMarkTxt.getText().equals(""))
         {
-            db.studentsModuleMark.set(stIDindex, enterModMarkTxt.getText());
+            db.modify("UPDATE students SET moduleMarks = '"
+                    +enterModMarkTxt.getText()+"' WHERE ID = '"+db.studentsID.get(stRowSelected)+"'");
             stuModMarkLblArray.get(stIDindex).setText(enterModMarkTxt.getText() + "%");
         }
         
