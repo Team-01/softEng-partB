@@ -4,6 +4,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -71,8 +73,11 @@ public class ARoptionsContainer extends JPanel implements MouseListener
     private JLabel lastBtnSelected;
     private JToggleButton lastArrSelected;
     
+    private GetFocus getFocus;
+    
     public ARoptionsContainer()
     {        
+        getFocus = new GetFocus();
         lastBtnSelected = new JLabel();
         lastArrSelected = new JToggleButton();
         outerLayout = new GridBagLayout();
@@ -106,10 +111,15 @@ public class ARoptionsContainer extends JPanel implements MouseListener
         datacontainers[4] = buildInnerPanel(options[4]);
         
         arrowBtns[0] = buildBtnArrow();
+        arrowBtns[0].addFocusListener(getFocus);
         arrowBtns[1] = buildBtnArrow();
+        arrowBtns[1].addFocusListener(getFocus);
         arrowBtns[2] = buildBtnArrow();
+        arrowBtns[2].addFocusListener(getFocus);
         arrowBtns[3] = buildBtnArrow();
+        arrowBtns[3].addFocusListener(getFocus);
         arrowBtns[4] = buildBtnArrow(); 
+        arrowBtns[4].addFocusListener(getFocus);
         
         stAvgBtnDataContainer1 = buildBtnDataPanel(
                 datacontainers[0],
@@ -397,6 +407,31 @@ public class ARoptionsContainer extends JPanel implements MouseListener
         //revalidate();
     }
     
+    private class GetFocus implements FocusListener{
+
+        @Override
+        public void focusGained(FocusEvent e) {
+            for (int compNum=0; compNum < options.length; compNum++)
+            {
+                if (e.getSource() == arrowBtns[compNum])
+                {
+                    options[compNum].setBorder(mainStyle.borderFocused);
+                    System.out.println("b");
+                }
+            }
+        }
+
+        @Override
+        public void focusLost(FocusEvent e) {
+            for (int compNum=0; compNum < options.length; compNum++)
+            {
+                if (e.getSource() == arrowBtns[compNum])
+                {
+                    options[compNum].setBorder(null);
+                }
+            }
+        }
+    }
         
     /**
      * @param args the command line arguments
@@ -407,29 +442,5 @@ public class ARoptionsContainer extends JPanel implements MouseListener
         ARoptionsContainer optionsContainer = new ARoptionsContainer();
         jframeAll.add(optionsContainer);
         jframeAll.setVisible(true);
-        /**
-        //to test buildBtn method
-        ARjFrameForTest jframeBtn = new ARjFrameForTest();
-        JPanel btn = optionsContainer.buildBtnJPanel(optionsContainer.buildBtn("whatever"));
-        jframeBtn.add(btn);
-        //jframeBtn.setVisible(true);
-        
-        //to test buildInnerPanel
-        ARjFrameForTest jframeInnerBtn = new ARjFrameForTest();
-        JPanel innerPanel = optionsContainer.buildInnerPanel(optionsContainer.buildBtnJPanel(optionsContainer.buildBtn("whatever")));
-        innerPanel.add(btn);
-        ARo1stAvgDataGrid stAvgDataGrid1 = new ARo1stAvgDataGrid();
-        innerPanel.add(stAvgDataGrid1);
-        jframeInnerBtn.add(innerPanel);
-        jframeInnerBtn.setVisible(true);
-        
-        //to test buildBtnJPanel
-        ARjFrameForTest jframeBtnDataContainer = new ARjFrameForTest();
-        JToggleButton button1 = optionsContainer.buildBtn("whatever");
-        JToggleButton arrowBtn = optionsContainer.buildBtnArrow();
-        JPanel btnDataPanel = optionsContainer.buildBtnDataPanel(innerPanel, arrowBtn);
-        jframeBtnDataContainer.add(btnDataPanel);
-        jframeBtnDataContainer.setVisible(true);
-        **/
     }
 }
