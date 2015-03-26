@@ -11,6 +11,7 @@ public class ManageStudents
     JScrollPane sp;
     Style mainStyle = new Style();
     SQLite db = new SQLite();
+    JPanel tableP;
     
     public ManageStudents()
     {
@@ -23,7 +24,7 @@ public class ManageStudents
         mainStyle.smoothScroll(sp);
         
         // Panel for entire table
-        JPanel tableP = new JPanel(new GridLayout(0,1));
+        tableP = new JPanel(new GridLayout(0,1));
         p.add(tableP);
         
         // Panel for the header row and all JLabels
@@ -56,7 +57,7 @@ public class ManageStudents
         
         for (int stuCount = 0; stuCount < db.studentsID.size(); stuCount++)
         {
-            JPanel studentP = new JPanel(new GridLayout(0,7));
+            final JPanel studentP = new JPanel(new GridLayout(0,7));
             studentP.setBackground(Color.white);
             studentP.setBorder(mainStyle.borderCustom(2, 2, 2, 2));
             tableP.add(studentP);
@@ -76,7 +77,13 @@ public class ManageStudents
                 @Override
                 public void actionPerformed(ActionEvent e) 
                 {
+                    // Remove student from DB
                     db.modify("DELETE FROM students WHERE stuID='"+currentID+"';");
+                    
+                    // Remove from panel and repaint
+                    tableP.remove(studentP);
+                    tableP.validate();
+                    tableP.repaint();
                 }
                 
             });
@@ -87,6 +94,7 @@ public class ManageStudents
                 @Override
                 public void actionPerformed(ActionEvent e) 
                 {
+                    // Update DB record for current student
                     db.modify("UPDATE students SET stuID='"+ID.getText()+"', stuName='"+Name.getText()+"',"
                             + "memberOfTeam='"+Team.getText()+"', moduleMark='"+ModuleMark.getText()+"', "
                             + "averageMark='"+AverageMark.getText()+"'"
