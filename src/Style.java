@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import static javax.swing.BorderFactory.createDashedBorder;
 import javax.swing.border.*;
 
 
@@ -42,6 +43,14 @@ public class Style extends JFrame
     EmptyBorder border10 = new EmptyBorder(10, 10, 10, 10);
     EmptyBorder borderScroll = new EmptyBorder(0,0,0,0); 
     
+    Border redBorder = BorderFactory.createLineBorder (Color.red, 2); 
+    Border borderFocused = createDashedBorder(systemColor,
+                        2, //thickness
+                        5, //length
+                        2, //spacing
+                        false //
+                        );
+    Border borderDefault = (BorderFactory.createLineBorder(systemColor, 2));
     
     // Fonts
     
