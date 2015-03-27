@@ -17,11 +17,10 @@ public class Questionnaire {
     JTextField textStuID;
     JTextField textStuName;
     JComboBox cbStuSubject;
-    JTextField textStuPhone;
+    JComboBox cbStuStudyType;
     JTextField textStuEmail;
     String currentStudentID;
     String currentStudentName;
-    String currentStudentPhone;
     String currentStudentEmail;
     // Create array list of all previous subjects to be shown in combobox
     ArrayList<String> prevSubjects = new ArrayList<String>();
@@ -82,13 +81,13 @@ public class Questionnaire {
             cbStuSubject.addItem(subject);
         }
         
-        // Create stu Phone label + text field
-        JLabel labelStuPhone = new JLabel("  Phone:");
-        labelStuPhone.setForeground(mainStyle.systemExtraDarkGrey);
-        textStuPhone = new JTextField("e.g. 07860838577");
-        textStuPhone.setPreferredSize( new Dimension( 140, 25 ) );
-        //Empty text field when clicked on
-        textStuPhone.addMouseListener(new MouseAdapter(){@Override public void mouseClicked(MouseEvent e){textStuPhone.setText("");}});
+        // Create stu study type label + text field
+        JLabel labelStuStudyType = new JLabel("  Study type:");
+        labelStuStudyType.setForeground(mainStyle.systemExtraDarkGrey);
+        cbStuStudyType = new JComboBox();
+        cbStuStudyType.setPreferredSize( new Dimension( 140, 25 ) );
+        cbStuStudyType.addItem("FT");
+        cbStuStudyType.addItem("PT");
         
         // Create stu Name label + text field
         JLabel labelStuEmail = new JLabel("  Email:");
@@ -104,7 +103,7 @@ public class Questionnaire {
         pStuInfo.add(labelStuID); pStuInfo.add(textStuID); 
         pStuInfo.add(labelStuName); pStuInfo.add(textStuName);
         pStuInfo.add(labelStuPrevSubject); pStuInfo.add(cbStuSubject);
-        pStuInfo.add(labelStuPhone); pStuInfo.add(textStuPhone);
+        pStuInfo.add(labelStuStudyType); pStuInfo.add(cbStuStudyType);
         pStuInfo.add(labelStuEmail); pStuInfo.add(textStuEmail);
         p.add(pStuInfo, gbc1); // add stu id panel to p
         
@@ -241,7 +240,6 @@ public class Questionnaire {
                         // variables for getting the text from student info text fields
                         currentStudentID = textStuID.getText();
                         currentStudentName = textStuName.getText();
-                        currentStudentPhone = textStuPhone.getText();
                         currentStudentEmail = textStuEmail.getText();
 
                         // Create variables to hold scores for each TeamRole
@@ -287,8 +285,8 @@ public class Questionnaire {
 
 
                         // Create a record for currentStudent in students table within DB with number and TeamRole scores
-                        se.db.modify("INSERT INTO students (stuID, stuName, stuPhone, stuEmail, previousSubject, trSH, trIMP, trCF, trCO, trTW, trRI, trPL, trME, trSP)"
-                                + "VALUES ('"+currentStudentID+"', '"+currentStudentName+"', '"+currentStudentPhone+"', '"+currentStudentEmail+"','"+cbStuSubject.getSelectedItem()+"', "
+                        se.db.modify("INSERT INTO students (stuID, stuName, stuStudyType, stuEmail, previousSubject, trSH, trIMP, trCF, trCO, trTW, trRI, trPL, trME, trSP)"
+                                + "VALUES ('"+currentStudentID+"', '"+currentStudentName+"', '"+cbStuStudyType.getSelectedItem()+"', '"+currentStudentEmail+"','"+cbStuSubject.getSelectedItem()+"', "
                                 +SHscore+", "+IMPscore+", "+CFscore+", "+COscore+", "+TWscore
                                 +","+RIscore+", "+PLscore+", "+MEscore+", "+SPscore+")");
 
@@ -313,7 +311,7 @@ public class Questionnaire {
                             textStuID.setText("e.g. C0815038");
                             textStuName.setText("e.g. Joe Bloggs");
                             cbStuSubject.setSelectedIndex(0);
-                            textStuPhone.setText("e.g. 07860838577");
+                            cbStuStudyType.setSelectedIndex(0);
                             textStuEmail.setText("e.g. joebloggs@email.com");
 
                         // Clear selection of all button groups
