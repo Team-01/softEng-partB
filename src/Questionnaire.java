@@ -46,7 +46,7 @@ public class Questionnaire {
         prevSubjects.add("Science");
         prevSubjects.add("Art");
         prevSubjects.add("Technology");
-        prevSubjects.add("Humanities");
+        prevSubjects.add("Other");
         
         
         // Create the pStuInfo panel

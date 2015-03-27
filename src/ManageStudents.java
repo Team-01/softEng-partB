@@ -37,9 +37,9 @@ public class ManageStudents
         
         JLabel headerL1 = new JLabel("Student ID");
         JLabel headerL2 = new JLabel("Student Name");
-        JLabel headerL3 = new JLabel("Member of Team");
-        JLabel headerL4 = new JLabel("Module Mark");
-        JLabel headerL5 = new JLabel("Average Mark");
+        JLabel headerL3 = new JLabel("Previous Subject");
+        JLabel headerL4 = new JLabel("Study Type");
+        JLabel headerL5 = new JLabel("Email Address");
         JLabel headerL6 = new JLabel("Delete Student");
         JLabel headerL7 = new JLabel("Update Student");
         
@@ -65,9 +65,14 @@ public class ManageStudents
             
             final JTextField ID = new JTextField(currentID);
             final JTextField Name = new JTextField(se.db.studentsStuName.get(stuCount));
-            final JTextField Team = new JTextField(se.db.studentsMemberOfTeam.get(stuCount));
-            final JTextField ModuleMark = new JTextField(se.db.studentsModuleMark.get(stuCount));
-            final JTextField AverageMark = new JTextField(se.db.studentsAverageMark.get(stuCount));
+            final JComboBox PreviousSubject = new JComboBox();
+            PreviousSubject.addItem("Business"); PreviousSubject.addItem("Engineering"); PreviousSubject.addItem("Science");
+            PreviousSubject.addItem("Art"); PreviousSubject.addItem("Technology"); PreviousSubject.addItem("Other");
+            PreviousSubject.setSelectedItem(se.db.studentsPreviousSubject.get(stuCount));
+            final JComboBox StudyType = new JComboBox();
+            StudyType.addItem("FT"); StudyType.addItem("PT");
+            StudyType.setSelectedItem(se.db.studentsStuStudyType.get(stuCount));
+            final JTextField Email = new JTextField(se.db.studentsStuEmail.get(stuCount));
             
             // Add buttons
             JButton Delete = new JButton("Delete");
@@ -95,8 +100,8 @@ public class ManageStudents
                 {
                     // Update DB record for current student
                     se.db.modify("UPDATE students SET stuID='"+ID.getText()+"', stuName='"+Name.getText()+"',"
-                            + "memberOfTeam='"+Team.getText()+"', moduleMark='"+ModuleMark.getText()+"', "
-                            + "averageMark='"+AverageMark.getText()+"'"
+                            + "previousSubject='"+PreviousSubject.getSelectedItem().toString()+"', stuStudyType='"+StudyType.getSelectedItem().toString()+"', "
+                            + "stuEmail='"+Email.getText()+"'"
                             + "WHERE stuID='"+currentID+"';");
                 }
                 
@@ -105,16 +110,11 @@ public class ManageStudents
             // Add all components to panel
             studentP.add(ID);
             studentP.add(Name);
-            studentP.add(Team);
-            studentP.add(ModuleMark);
-            studentP.add(AverageMark);
+            studentP.add(PreviousSubject);
+            studentP.add(StudyType);
+            studentP.add(Email);
             studentP.add(Delete);
-            studentP.add(Update);
-            
-            
+            studentP.add(Update);   
         }
-        
-        
-        
     }
 }
