@@ -518,13 +518,15 @@ public class ARo5inResDataGrid extends JPanel implements MouseListener
     {
         if (!enterModMarkTxt.getText().equals(""))
         {
-            db.studentsModuleMark.set(stIDindex, enterModMarkTxt.getText());
+            db.modify("UPDATE students SET moduleMark = '"
+                    +enterModMarkTxt.getText()+"' WHERE ID = '"+db.studentsID.get(stRowSelected)+"'");
             stuModMarkLblArray.get(stIDindex).setText(enterModMarkTxt.getText() + "%");
         }
         
         if (!enterYrAvgTxt.getText().equals(""))
         {
-            db.studentsAverageMark.set(stIDindex, enterYrAvgTxt.getText());
+            db.modify("UPDATE students SET averageMark = '"
+                    +enterModMarkTxt.getText()+"' WHERE ID = '"+db.studentsID.get(stRowSelected)+"'");
             stuYrAvgLblArray.get(stIDindex).setText(enterYrAvgTxt.getText() + "%");
             revalidate();
         }
@@ -613,7 +615,7 @@ public class ARo5inResDataGrid extends JPanel implements MouseListener
         gbc.gridwidth=1;
         
         this.add(menuLvl1Panel, gbc);
-        gbc.insets = new Insets(0,50,0,100);
+        gbc.insets = new Insets(10,50,0,100);
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.NORTHWEST;
         this.add(dataViewLvl1Panel, gbc);

@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -123,6 +124,8 @@ public class ManageQuestions
                     int quesNum = updateCount + 1;
                     
                     se.db.modify("UPDATE questions SET question='"+newQuestion+"' WHERE number="+quesNum+";");
+
+                    System.out.println(newQuestion);
                 }
 
                 mainStyle.createPopUpFrame("Questions updated. Please restart the system for changes to take effect.", 500, 150);
