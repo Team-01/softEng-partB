@@ -526,7 +526,7 @@ public class ARo5inResDataGrid extends JPanel implements MouseListener
         if (!enterYrAvgTxt.getText().equals(""))
         {
             db.modify("UPDATE students SET averageMark = '"
-                    +enterModMarkTxt.getText()+"' WHERE ID = '"+db.studentsID.get(stRowSelected)+"'");
+                    +enterYrAvgTxt.getText()+"' WHERE ID = '"+db.studentsID.get(stRowSelected)+"'");
             stuYrAvgLblArray.get(stIDindex).setText(enterYrAvgTxt.getText() + "%");
             revalidate();
         }
