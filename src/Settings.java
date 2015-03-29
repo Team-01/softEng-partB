@@ -2,6 +2,7 @@ import javax.swing.border.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 
 public class Settings
@@ -9,9 +10,8 @@ public class Settings
     JPanel p;
     JScrollPane sp;
     Style mainStyle = new Style();
-    SQLite db = new SQLite();
     
-    public Settings(SE se)
+    public Settings(final SE se)
     {
         // Make main class panel and make it a scrollpane
         JPanel p = new JPanel(new GridLayout(0, 3));
@@ -85,10 +85,10 @@ public class Settings
                         {
                             switch (themeCount)
                             { 
-                                case 0: db.modify("UPDATE settings SET colorR='176', colorG='23', colorB='31' WHERE ID=1"); break;//Red
-                                case 1: db.modify("UPDATE settings SET colorR='61', colorG='89', colorB='171' WHERE ID=1"); break;//Blue
-                                case 2: db.modify("UPDATE settings SET colorR='48', colorG='128', colorB='20' WHERE ID=1"); break;//Green
-                                case 3: db.modify("UPDATE settings SET colorR='180', colorG='82', colorB='205' WHERE ID=1"); break;//Purple
+                                case 0: se.db.modify("UPDATE settings SET colorR='176', colorG='23', colorB='31' WHERE ID=1"); break;//Red
+                                case 1: se.db.modify("UPDATE settings SET colorR='61', colorG='89', colorB='171' WHERE ID=1"); break;//Blue
+                                case 2: se.db.modify("UPDATE settings SET colorR='48', colorG='128', colorB='20' WHERE ID=1"); break;//Green
+                                case 3: se.db.modify("UPDATE settings SET colorR='180', colorG='82', colorB='205' WHERE ID=1"); break;//Purple
                             }
                             
                             mainStyle.createPopUpFrame("Theme changes will take effect next time you start the system.", 450, 150);
@@ -173,17 +173,14 @@ public class Settings
                     String currentPass = tPasswordSub1.getText();
                     String newPass = tPasswordSub2.getText();
                     String newPassConfirm = tPasswordSub3.getText();
+
+                    se.db.selectSettings(); //refresh data in arraylists
                     
-                    try {
-                        db.selectSettings(); //refresh data in arraylists
-                    }
-                    catch(Exception ex){System.out.println("settings line 180");}
-                    
-                    if (currentPass == db.settingsAdminPassword.get(0))
+                    if (currentPass.equals(se.db.settingsAdminPassword.get(0)))
                     {
-                        if (newPass == newPassConfirm)
+                        if (newPass.equals(newPassConfirm))
                         {
-                            db.modify("UPDATE settings SET adminPassword = '"+newPass+"' WHERE ID = 1");
+                            se.db.modify("UPDATE settings SET adminPassword = '"+newPass+"' WHERE ID = 1");
                             mainStyle.createPopUpFrame("Password successfully updated.", 350, 150);
                             tPasswordSub1.setText("");
                             tPasswordSub2.setText("");
@@ -247,9 +244,60 @@ public class Settings
                 @Override
                 public void actionPerformed (ActionEvent e)
                 {
-                   db.modify("DELETE FROM students");
-                   db.modify("DELETE FROM questions");
-                   db.modify("INSERT ");
+                    se.db.selectSettings(); //refresh data in arraylists
+                    
+                    if (tResetSub2.getText().equals(se.db.settingsAdminPassword.get(0)))
+                    {
+                        // Delete all info in questions and students table
+                        se.db.modify("DELETE FROM students");
+                        se.db.modify("DELETE FROM questions");
+                        
+                        // Get arraylist of default questions
+                        String q1 = "I work best under pressure and enjoy challenges.";
+                        String q2 = "I sometimes provoke and offend others in the team.";
+                        String q3 = "I often transform ideas into practical solutions.";
+                        String q4 = "I dont like new ideas that conflict with current plans.";
+                        String q5 = "I always meet deadlines.";
+                        String q6 = "I would rather do tasks myself than delegate them.";
+                        String q7 = "I can confidently make key decisions for the team.";
+                        String q8 = "Im good at manipulating team mates into my way of thinking.";
+                        String q9 = "I enjoy the social aspects working as a team and working with others.";
+                        String q10 = "I can be easily influenced by other team members.";
+                        String q11 = "I enjoy working with people outside of the team to help achieve team goals.";
+                        String q12 = "I can lose interest in projects when they no longer excite me.";
+                        String q13 = "I like to think outside the box and thrive on praise from others.";
+                        String q14 = "I find that my ideas are usually better than team mates ideas.";
+                        String q15 = "Im good at strategic planning, as I can objectively analyse ideas.";
+                        String q16 = "I find it difficult to motivate myself and to inspire others around me.";
+                        String q17 = "I like to focus exclusively on my area of expertise.";
+                        String q18 = "I would rather concentrate on my own work than the big picture.";
+                        String q19 = "I have previous programming knowledge and/or experience.";
+                        String q20 = "Is the Java expression \"int mynum = 27.89;\" a valid one?";
+                        String q21 = "Is C# the language used for querying databases?";
+                        String q22 = "Does the Python expression \"count ++\" increase the value of count by 1?";
+                        
+                        ArrayList<String> questions = new ArrayList<String>();
+                        questions.add(q1); questions.add(q2); questions.add(q3); questions.add(q4); questions.add(q5);
+                        questions.add(q6); questions.add(q7); questions.add(q8); questions.add(q9); questions.add(q10);
+                        questions.add(q11); questions.add(q12); questions.add(q13); questions.add(q14); questions.add(q15);
+                        questions.add(q16); questions.add(q17); questions.add(q18); questions.add(q19); questions.add(q20);
+                        questions.add(q21); questions.add(q22);
+                        
+                        // Insert all default questions
+                        int count = 1;
+                        for (String q:questions)
+                        {
+                            se.db.modify("INSERT INTO questions (number, question) VALUES ("+count+", '"+q+"')");
+                            count++;
+                        }
+                        mainStyle.createPopUpFrame("System successfully reset.", 300, 150);
+                    }
+                    else
+                    {
+                        // Show pop up for incorrect password
+                        mainStyle.createPopUpFrame("Incorrect password entered. Please try again.", 400, 150);
+                    }
+                   
                 }
             });
     }

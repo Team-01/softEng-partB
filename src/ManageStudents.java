@@ -103,6 +103,9 @@ public class ManageStudents
                             + "previousSubject='"+PreviousSubject.getSelectedItem().toString()+"', stuStudyType='"+StudyType.getSelectedItem().toString()+"', "
                             + "stuEmail='"+Email.getText()+"'"
                             + "WHERE stuID='"+currentID+"';");
+                    
+                    // Show confirmation message
+                    mainStyle.createPopUpFrame("Student data successfully updated.", 350, 150);
                 }
                 
             });

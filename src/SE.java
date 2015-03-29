@@ -1,17 +1,14 @@
-import javax.swing.border.*;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
-import java.util.logging.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class SE extends JFrame
 {
     JPanel pMain;
     Style mainStyle = new Style(); // Create an instance of the Style class for accessing system styles
     SQLite db = new SQLite(); // Create an instance of SQLite class for working on SE.db sqlite database
-    
+    JTabbedPane tabMenu;
     
     
     public SE()
@@ -31,18 +28,18 @@ public class SE extends JFrame
         pMain.setBackground(mainStyle.systemLightGrey);
         
         // Make the tabbed pain object
-        JTabbedPane tabMenu = new JTabbedPane();
+        tabMenu = new JTabbedPane();
         
         
         // Make the tabs (objects of the different use case classes)
-        Welcome WelcomePane = new Welcome(this);
-        Questionnaire UseCase1 = new Questionnaire(this);
-        CreateTeams UseCase2 = new CreateTeams(this);
-        ViewTeams UseCase3 = new ViewTeams(this);
-        AnalyseResults UseCase4 = new AnalyseResults(this);
-        ManageQuestions ExtraFeature1 = new ManageQuestions(this);
-        ManageStudents ExtraFeature2 = new ManageStudents(this);
-        Settings ExtraFeature3 = new Settings(this);
+       final Welcome WelcomePane = new Welcome(this);
+       final Questionnaire UseCase1 = new Questionnaire(this);
+       final CreateTeams UseCase2 = new CreateTeams(this);
+      final  ViewTeams UseCase3 = new ViewTeams(this);
+      final  AnalyseResults UseCase4 = new AnalyseResults(this);
+       final ManageQuestions ExtraFeature1 = new ManageQuestions(this);
+        final ManageStudents ExtraFeature2 = new ManageStudents(this);
+       final Settings ExtraFeature3 = new Settings(this);
         
         
         // Add the tabs to the Tabbed Pane
@@ -54,6 +51,26 @@ public class SE extends JFrame
         tabMenu.addTab("Manage Questions", ExtraFeature1.sp);
         tabMenu.addTab("Manage Students", ExtraFeature2.sp);
         tabMenu.addTab("Settings", ExtraFeature3.sp);
+        
+        
+        // Get panes (and SQLite object) to refresh when changes
+        tabMenu.addChangeListener(new ChangeListener()
+        {
+
+            @Override
+            public void stateChanged(ChangeEvent e) 
+            {
+                db.refresh();
+             
+                UseCase1.p.validate();
+                UseCase1.p.repaint();
+                UseCase1.pQuestion.validate();
+                UseCase1.pQuestion.repaint();
+            }
+            
+        });
+        
+        
         
         
         // Add the tabbed pane to the main panel

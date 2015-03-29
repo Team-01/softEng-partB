@@ -24,6 +24,8 @@ public class Questionnaire {
     String currentStudentEmail;
     // Create array list of all previous subjects to be shown in combobox
     ArrayList<String> prevSubjects = new ArrayList<String>();
+    // Panels for questions
+    JPanel pQuestion;
     
     public Questionnaire(final SE se)
     {
@@ -139,13 +141,13 @@ public class Questionnaire {
         // Use selectQuestions method on database to fill the questions arrayLists with data
         se.db.selectQuestions();
         
-        while (qCount < se.db.questionsID.size()-3)
+        while (qCount < se.db.questionsID.size()-3) // -3 because test questions
         {
             // Create a panel for each Q box
             JPanel pQBox = new JPanel(new GridLayout(0,1));
             EmptyBorder borderQBox = new EmptyBorder(30, 20, 30, 20);
             pQBox.setBorder(borderQBox);
-            JPanel pQuestion = new JPanel();
+            pQuestion = new JPanel();
             JPanel pAnswers = new JPanel(new GridBagLayout());
             
             // Set colour for panels

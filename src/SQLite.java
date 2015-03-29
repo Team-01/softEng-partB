@@ -23,7 +23,6 @@ public class SQLite
     ArrayList<String> questionsID = new ArrayList<String>();
     ArrayList<String> questionsNumber = new ArrayList<String>();
     ArrayList<String> questionsQuestion = new ArrayList<String>();
-    ArrayList<String> questionsQuesOrTest = new ArrayList<String>();
     
     ArrayList<String> studentsID = new ArrayList<String>();
     ArrayList<String> studentsStuID = new ArrayList<String>();
@@ -58,7 +57,6 @@ public class SQLite
         try {
           Class.forName("org.sqlite.JDBC");
           c = DriverManager.getConnection("jdbc:sqlite:src/resources/SE.db");
-          System.out.println("Opened database successfully");
           c.setAutoCommit(false);
           
           stmt = c.createStatement();
@@ -84,7 +82,6 @@ public class SQLite
       Class.forName("org.sqlite.JDBC");
       c = DriverManager.getConnection("jdbc:sqlite:src/resources/SE.db");
       c.setAutoCommit(false);
-      System.out.println("Opened database successfully");
 
       stmt = c.createStatement();
       rs = stmt.executeQuery(sql);
@@ -150,7 +147,6 @@ public class SQLite
             questionsID.clear();
             questionsNumber.clear();
             questionsQuestion.clear();
-            questionsQuesOrTest.clear();
         }
         
         ResultSet results = selectStart("SELECT * FROM questions ORDER BY ID;");
@@ -161,7 +157,6 @@ public class SQLite
                 questionsID.add(results.getString("ID"));
                 questionsNumber.add(results.getString("number"));
                 questionsQuestion.add(results.getString("question"));
-                questionsQuesOrTest.add(results.getString("quesOrTest"));
             }
         }
         catch (SQLException ex)
