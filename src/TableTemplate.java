@@ -5,6 +5,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -14,12 +15,19 @@ import javax.swing.JPanel;
  */
 public class TableTemplate extends JPanel implements MouseListener
 {
+    private ImageIcon gArrow;
+    private ImageIcon rArrow;
+    private ImageIcon neutral;
+    
     private GridBagConstraints gbc;
     private GridBagLayout tblLayout;
     private GridBagLayout dataViewLvl1Layout;
     
     private ArrayList<ArrayList> columnArray;
     private ArrayList<ArrayList> lblcolArray;
+    
+    private ArrayList<JPanel> selectedPnls;
+    private ArrayList<JLabel> selectedLbls;
 
     Color systemLightGrey2 = new Color(227, 227, 227);
     
@@ -30,6 +38,87 @@ public class TableTemplate extends JPanel implements MouseListener
             ArrayList<ArrayList> stDataArrays,
             boolean selectable) 
     {
+        buildTbl(tblHeadings, stDataArrays, selectable);
+    }
+    
+    public TableTemplate(
+            ArrayList<String> tblHeadings,
+            ArrayList<ArrayList> stDataArrays,
+            boolean selectable,
+            int columnIlook, 
+            int columnItest)
+    {
+        buildTblComp(tblHeadings,
+                    stDataArrays, 
+                    selectable, 
+                    columnIlook, 
+                    columnItest);
+    }
+    
+    public void buildTblComp(
+        ArrayList<String> tblHeadings,
+        ArrayList<ArrayList> stDataArrays,
+        boolean selectable,
+        int columnIlook, 
+        int columnItest)
+    {
+        buildTbl(tblHeadings, stDataArrays, selectable);
+        gArrow = new ImageIcon(getClass().getClassLoader().getResource(
+                "resources/gArrow.png"));
+        rArrow = new ImageIcon(getClass().getClassLoader().getResource(
+                "resources/rArrow.png"));
+        neutral = new ImageIcon(getClass().getClassLoader().getResource(
+                "resources/neutral.png"));
+        JLabel gArrowLbl = new JLabel(gArrow);
+        JLabel rArrowLbl = new JLabel(rArrow);
+        JLabel neutralLbl = new JLabel(neutral);
+        
+        JPanel cHeaderPnl = buildTblLblPanel(gArrowLbl,selectable);
+        //cHeaderPnl.add(neutralLbl);
+        cHeaderPnl.add(rArrowLbl);
+        
+        gbc.gridx = tblHeadings.size();
+        gbc.gridy = 0;
+        this.add(cHeaderPnl,gbc);
+        gbc.gridy = 1;
+        int columnLength = stDataArrays.get(columnIlook).size(); 
+        for (int row = 0; row<columnLength; row++)
+        {
+            gArrowLbl = new JLabel(gArrow);
+            rArrowLbl = new JLabel(rArrow);
+            neutralLbl = new JLabel(neutral);
+            ArrayList<String>columnLookArray = stDataArrays.get(columnIlook);
+            ArrayList<String>columnTestArray = stDataArrays.get(columnItest);
+            int lookData = Integer.parseInt(columnLookArray.get(row));
+            int testData = Integer.parseInt(columnTestArray.get(row));
+            if (lookData > testData)
+            {
+                JPanel rArrowPnl = buildTblLblPanel(rArrowLbl, selectable);
+                this.add(rArrowPnl,gbc);
+            }
+            else if (lookData < testData)
+            {
+                JPanel gArrowPnl = buildTblLblPanel(gArrowLbl, selectable);
+                this.add(gArrowPnl,gbc);
+            }
+            else if (lookData == testData)
+            {
+                JPanel neutralPnl = buildTblLblPanel(neutralLbl, selectable);
+                this.add(neutralPnl,gbc);
+            }
+            gbc.gridy++;
+        }
+    }
+            
+    
+    public void buildTbl(
+            ArrayList<String> tblHeadings,
+            ArrayList<ArrayList> stDataArrays,
+            boolean selectable)
+    {
+        
+        selectedPnls = new ArrayList();
+        selectedLbls = new ArrayList();
         columnArray = new ArrayList();
         lblcolArray = new ArrayList();
         tblLayout = new GridBagLayout();
@@ -41,7 +130,7 @@ public class TableTemplate extends JPanel implements MouseListener
         gbc.weighty=1;
         gbc.gridx = 0;
 	gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.fill = GridBagConstraints.BOTH;
         for (int i = 0; i < stDataArrays.size(); i++)
         {
             ArrayList<JPanel> column = new ArrayList();
@@ -86,11 +175,17 @@ public class TableTemplate extends JPanel implements MouseListener
             revalidate();
         }
         
-    }      
+    }
     
     public JPanel buildTblLblPanel(JLabel lbl, Boolean selectable)
     {
         JPanel tblLblPanel = new JPanel();
+        //GridBagLayout pnlLayout = new GridBagLayout();
+        //tblLblPanel.setLayout(pnlLayout);
+        //GridBagConstraints gbcpnl= new GridBagConstraints();
+        //gbcpnl.gridheight = 1;
+        //gbcpnl.gridwidth = 1;
+        //gbcpnl.fill = GridBagConstraints.HORIZONTAL;
 
         tblLblPanel.setBackground(Color.white);
         tblLblPanel.setBorder(BorderFactory.createLineBorder
@@ -134,11 +229,16 @@ public class TableTemplate extends JPanel implements MouseListener
                 if (event==cell ||
                     event==cellLbl)
                 {
+                    selectedPnls = new ArrayList();
+                    selectedLbls = new ArrayList();
                     for (int i = 0;i<columnArray.size(); i++)
                     {
                         col = columnArray.get(i);
                         cell=col.get(row);
                         cellLbl=lblcol.get(row);
+                        selectedPnls.add(cell);
+                        selectedLbls.add(cellLbl);
+                        
                         if (type == "select")
                         {
                             //if(cell.getBackground() == mainStyle.systemDarkGrey ||
@@ -179,7 +279,6 @@ public class TableTemplate extends JPanel implements MouseListener
                 }
                 else if (type == "select")
                 {
-
                     if (row!=r)
                     cell.setBackground(Color.white);
                 }
