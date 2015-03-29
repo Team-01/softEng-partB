@@ -17,17 +17,17 @@ CREATE TABLE settings (ID INTEGER PRIMARY KEY, adminPassword VARCHAR(30) NOT NUL
 
 ------------------- SQL for loading sample students-------------------    
 
-INSERT INTO students (stuID, stuName, stuStudyType, stuEmail, previousSubject, trSH, trIMP, trCF, trCO, trTW, trRI, trPL, trME, trSP, testScore, moduleMark, averageMark)
-VALUES ("C0815038", "Mike Allaway", "FT", "mikeallaway@gmail.com", "Business", 1, 2, 3, 4, 5, 6, 7, 8, 9, 2, 60, 70);
+INSERT INTO students (stuID, stuName, stuStudyType, stuEmail, previousSubject, trSH, trIMP, trCF, trCO, trTW, trRI, trPL, trME, trSP, teamRole, testScore, moduleMark, averageMark)
+VALUES ("C0815038", "Mike Allaway", "FT", "mikeallaway@gmail.com", "Business", 1, 2, 3, 4, 5, 6, 7, 8, 9, "IMP", 2, 60, 70);
 
-INSERT INTO students (stuID, stuName, stuStudyType, stuEmail, previousSubject, trSH, trIMP, trCF, trCO, trTW, trRI, trPL, trME, trSP, testScore, moduleMark, averageMark)
-VALUES ("C0915949", "Kit Rothwell", "FT", "kit@gmail.com", "Science", 1, 9, 2, 4, 4, 6, 7, 4, 9, 3, 65, 70);
+INSERT INTO students (stuID, stuName, stuStudyType, stuEmail, previousSubject, trSH, trIMP, trCF, trCO, trTW, trRI, trPL, trME, trSP, teamRole, testScore, moduleMark, averageMark)
+VALUES ("C0915949", "Kit Rothwell", "FT", "kit@gmail.com", "Science", 1, 9, 2, 4, 4, 6, 7, 4, 9, "CF", 3, 65, 70);
 
-INSERT INTO students (stuID, stuName, stuStudyType, stuEmail, previousSubject, trSH, trIMP, trCF, trCO, trTW, trRI, trPL, trME, trSP, testScore, moduleMark, averageMark)
-VALUES ("C9382038", "Chris Green", "PT", "chris@hotmail.com", "Art", 3, 10, 1, 4, 5, 2, 7, 8, 1, 2, 50, 80);
+INSERT INTO students (stuID, stuName, stuStudyType, stuEmail, previousSubject, trSH, trIMP, trCF, trCO, trTW, trRI, trPL, trME, trSP, teamRole, testScore, moduleMark, averageMark)
+VALUES ("C9382038", "Chris Green", "PT", "chris@hotmail.com", "Art", 3, 10, 1, 4, 5, 2, 7, 8, 1, "TW", 2, 50, 80);
 
-INSERT INTO students (stuID, stuName, stuStudyType, stuEmail, previousSubject, trSH, trIMP, trCF, trCO, trTW, trRI, trPL, trME, trSP, testScore, moduleMark, averageMark)
-VALUES ("C2332099", "Arnaud Escalant", "FT", "arno@email.com", "Art", 3, 1, 1, 9, 5, 4, 5, 2, 9, 1, 60, 60);
+INSERT INTO students (stuID, stuName, stuStudyType, stuEmail, previousSubject, trSH, trIMP, trCF, trCO, trTW, trRI, trPL, trME, trSP, teamRole, testScore, moduleMark, averageMark)
+VALUES ("C2332099", "Arnaud Escalant", "FT", "arno@email.com", "Art", 3, 1, 1, 9, 5, 4, 5, 2, 9, "SP", 1, 60, 60);
 
 
 
