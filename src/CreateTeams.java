@@ -24,7 +24,7 @@ public class CreateTeams {
     private ArrayList<JList> teamLists = new ArrayList();
     private JList unassignedList;
     public int numTeams;
-    private boolean fakeStudents = true;
+    private boolean fakeStudents = false;
     private SQLite dbToUseWhenEventFired;
     private boolean groupPartTime = false;
         
