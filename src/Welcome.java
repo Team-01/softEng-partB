@@ -23,7 +23,7 @@ public class Welcome
         // Create main title panel + label
         JPanel pTitle = new JPanel(new BorderLayout());
         pTitle.setBackground(Color.white);
-        JLabel lTitle = new JLabel("System Title");
+        JLabel lTitle = new JLabel("Team Generator");
         lTitle.setForeground(mainStyle.systemColor);
         lTitle.setFont(mainStyle.fontXL);
         lTitle.setBorder(mainStyle.borderCustom(20, 0, 0, 0));
@@ -35,7 +35,7 @@ public class Welcome
         JPanel pSubTitle = new JPanel(new BorderLayout());
         pSubTitle.setBorder(mainStyle.borderCustom(5, 0, 40, 0));
         pSubTitle.setBackground(Color.white);
-        JLabel lSubTitle = new JLabel("A sentence about what the system does");
+        JLabel lSubTitle = new JLabel("Allocate your students into well-balanced teams.");
         lSubTitle.setForeground(mainStyle.systemExtraDarkGrey);
         lSubTitle.setFont(mainStyle.fontL);
         pSubTitle.add(lSubTitle);
@@ -139,7 +139,7 @@ public class Welcome
         // Make page footer
         JPanel pFooter = new JPanel();
         pFooter.setBackground(Color.white);
-        JLabel lFooter = new JLabel("System Title was developed by Team 1 on MSc Computing at Cardiff University, 2015.");
+        JLabel lFooter = new JLabel("Team Generator was developed by Team 1 on MSc Computing at Cardiff University, 2015.");
         lFooter.setForeground(mainStyle.systemColor);
         lFooter.setFont(mainStyle.fontS);
         pFooter.add(lFooter);

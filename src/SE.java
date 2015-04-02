@@ -1,24 +1,21 @@
-import javax.swing.border.*;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
-import java.util.logging.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class SE extends JFrame
 {
     JPanel pMain;
     Style mainStyle = new Style(); // Create an instance of the Style class for accessing system styles
     SQLite db = new SQLite(); // Create an instance of SQLite class for working on SE.db sqlite database
-    
+    JTabbedPane tabMenu;
     
     
     public SE()
     {
                 
         // Set up frame
-        setTitle("System Title");
+        setTitle("Team Generator");
         setSize(1200, 750);
         setResizable(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -31,7 +28,7 @@ public class SE extends JFrame
         pMain.setBackground(mainStyle.systemLightGrey);
         
         // Make the tabbed pain object
-        JTabbedPane tabMenu = new JTabbedPane();
+        tabMenu = new JTabbedPane();
         
         
         // Make the tabs (objects of the different use case classes)

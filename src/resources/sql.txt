@@ -7,7 +7,7 @@
 CREATE TABLE students (ID INTEGER PRIMARY KEY, stuID VARCHAR(10) NOT NULL UNIQUE, stuName VARCHAR(200) NOT NULL, stuStudyType VARCHAR(2), stuEmail VARCHAR(200), memberOfTeam VARCHAR(20), previousSubject VARCHAR(100) NOT NULL, trSH INTEGER NOT NULL, trIMP INTEGER NOT NULL, trCF INTEGER NOT NULL,
 trCO INTEGER NOT NULL, trTW INTEGER NOT NULL, trRI INTEGER NOT NULL, trPL INTEGER NOT NULL, trME INTEGER NOT NULL, trSP INTEGER NOT NULL, teamRole VARCHAR(50), testScore INTEGER, moduleMark INTEGER, averageMark INTEGER);
 
-CREATE TABLE questions (ID INTEGER PRIMARY KEY, number VARCHAR(2) NOT NULL, question VARCHAR(100) NOT NULL, quesOrTest VARCHAR(5) NOT NULL);
+CREATE TABLE questions (ID INTEGER PRIMARY KEY, number VARCHAR(2) NOT NULL, question VARCHAR(100) NOT NULL);
 
 CREATE TABLE settings (ID INTEGER PRIMARY KEY, adminPassword VARCHAR(30) NOT NULL, colorR INTEGER NOT NULL, colorG INTEGER NOT NULL, colorB INTEGER NOT NULL);
 
@@ -17,17 +17,17 @@ CREATE TABLE settings (ID INTEGER PRIMARY KEY, adminPassword VARCHAR(30) NOT NUL
 
 ------------------- SQL for loading sample students-------------------    
 
-INSERT INTO students (stuID, stuName, stuStudyType, stuEmail, previousSubject, trSH, trIMP, trCF, trCO, trTW, trRI, trPL, trME, trSP, testScore, moduleMark, averageMark)
-VALUES ("C0815038", "Mike Allaway", "FT", "mikeallaway@gmail.com", "Business", 1, 2, 3, 4, 5, 6, 7, 8, 9, 2, 60, 70);
+INSERT INTO students (stuID, stuName, stuStudyType, stuEmail, previousSubject, trSH, trIMP, trCF, trCO, trTW, trRI, trPL, trME, trSP, teamRole, testScore, moduleMark, averageMark)
+VALUES ("C0815038", "Mike Allaway", "FT", "mikeallaway@gmail.com", "Business", 1, 2, 3, 4, 5, 6, 7, 8, 9, "IMP", 2, 60, 70);
 
-INSERT INTO students (stuID, stuName, stuStudyType, stuEmail, previousSubject, trSH, trIMP, trCF, trCO, trTW, trRI, trPL, trME, trSP, testScore, moduleMark, averageMark)
-VALUES ("C0915949", "Kit Rothwell", "FT", "kit@gmail.com", "Science", 1, 9, 2, 4, 4, 6, 7, 4, 9, 3, 65, 70);
+INSERT INTO students (stuID, stuName, stuStudyType, stuEmail, previousSubject, trSH, trIMP, trCF, trCO, trTW, trRI, trPL, trME, trSP, teamRole, testScore, moduleMark, averageMark)
+VALUES ("C0915949", "Kit Rothwell", "FT", "kit@gmail.com", "Science", 1, 9, 2, 4, 4, 6, 7, 4, 9, "CF", 3, 65, 70);
 
-INSERT INTO students (stuID, stuName, stuStudyType, stuEmail, previousSubject, trSH, trIMP, trCF, trCO, trTW, trRI, trPL, trME, trSP, testScore, moduleMark, averageMark)
-VALUES ("C9382038", "Chris Green", "PT", "chris@hotmail.com", "Art", 3, 10, 1, 4, 5, 2, 7, 8, 1, 2, 50, 80);
+INSERT INTO students (stuID, stuName, stuStudyType, stuEmail, previousSubject, trSH, trIMP, trCF, trCO, trTW, trRI, trPL, trME, trSP, teamRole, testScore, moduleMark, averageMark)
+VALUES ("C9382038", "Chris Green", "PT", "chris@hotmail.com", "Art", 3, 10, 1, 4, 5, 2, 7, 8, 1, "TW", 2, 50, 80);
 
-INSERT INTO students (stuID, stuName, stuStudyType, stuEmail, previousSubject, trSH, trIMP, trCF, trCO, trTW, trRI, trPL, trME, trSP, testScore, moduleMark, averageMark)
-VALUES ("C2332099", "Arnaud Escalant", "FT", "arno@email.com", "Art", 3, 1, 1, 9, 5, 4, 5, 2, 9, 1, 60, 60);
+INSERT INTO students (stuID, stuName, stuStudyType, stuEmail, previousSubject, trSH, trIMP, trCF, trCO, trTW, trRI, trPL, trME, trSP, teamRole, testScore, moduleMark, averageMark)
+VALUES ("C2332099", "Arnaud Escalant", "FT", "arno@email.com", "Art", 3, 1, 1, 9, 5, 4, 5, 2, 9, "SP", 1, 60, 60);
 
 
 
@@ -35,29 +35,29 @@ VALUES ("C2332099", "Arnaud Escalant", "FT", "arno@email.com", "Art", 3, 1, 1, 9
 
 ---------------- SQL for loading all default questions----------------                
 
-INSERT INTO questions (number, question, quesOrTest) VALUES ("1", "I work best under pressure and enjoy challenges.", "q");
-INSERT INTO questions (number, question, quesOrTest) VALUES ("2", "I sometimes provoke and offend others in the team.", "q");
-INSERT INTO questions (number, question, quesOrTest) VALUES ("3", "I often transform ideas into practical solutions.", "q");
-INSERT INTO questions (number, question, quesOrTest) VALUES ("4", "I don't like new ideas that conflict with current plans.", "q");
-INSERT INTO questions (number, question, quesOrTest) VALUES ("5", "I always meet deadlines.", "q");
-INSERT INTO questions (number, question, quesOrTest) VALUES ("6", "I would rather do tasks myself than delegate them.", "q");
-INSERT INTO questions (number, question, quesOrTest) VALUES ("7", "I can confidently make key decisions for the team.", "q");
-INSERT INTO questions (number, question, quesOrTest) VALUES ("8", "I'm good at manipulating team mates into my way of thinking.", "q");
-INSERT INTO questions (number, question, quesOrTest) VALUES ("9", "I enjoy the social aspects working as a team and working with others.", "q");
-INSERT INTO questions (number, question, quesOrTest) VALUES ("10", "I can be easily influenced by other team members.", "q");
-INSERT INTO questions (number, question, quesOrTest) VALUES ("11", "I enjoy working with people outside of the team to help achieve team goals.", "q");
-INSERT INTO questions (number, question, quesOrTest) VALUES ("12", "I can lose interest in projects when they no longer excite me.", "q");
-INSERT INTO questions (number, question, quesOrTest) VALUES ("13", "I like to think outside the box and thrive on praise from others.", "q");
-INSERT INTO questions (number, question, quesOrTest) VALUES ("14", "I find that my ideas are usually better than team mates' ideas.", "q");
-INSERT INTO questions (number, question, quesOrTest) VALUES ("15", "I'm good at strategic planning, as I can objectively analyse ideas.", "q");
-INSERT INTO questions (number, question, quesOrTest) VALUES ("16", "I find it difficult to motivate myself and to inspire others around me.", "q");
-INSERT INTO questions (number, question, quesOrTest) VALUES ("17", "I like to focus exclusively on my area of expertise.", "q");
-INSERT INTO questions (number, question, quesOrTest) VALUES ("18", "I would rather concentrate on my own work than the big picture.", "q");
-INSERT INTO questions (number, question, quesOrTest) VALUES ("19", "I have previous programming knowledge and/or experience.", "q");
+INSERT INTO questions (number, question) VALUES ("1", "I work best under pressure and enjoy challenges.");
+INSERT INTO questions (number, question) VALUES ("2", "I sometimes provoke and offend others in the team.");
+INSERT INTO questions (number, question) VALUES ("3", "I often transform ideas into practical solutions.");
+INSERT INTO questions (number, question) VALUES ("4", "I don't like new ideas that conflict with current plans.");
+INSERT INTO questions (number, question) VALUES ("5", "I always meet deadlines.");
+INSERT INTO questions (number, question) VALUES ("6", "I would rather do tasks myself than delegate them.");
+INSERT INTO questions (number, question) VALUES ("7", "I can confidently make key decisions for the team.");
+INSERT INTO questions (number, question) VALUES ("8", "I'm good at manipulating team mates into my way of thinking.");
+INSERT INTO questions (number, question) VALUES ("9", "I enjoy the social aspects working as a team and working with others.");
+INSERT INTO questions (number, question) VALUES ("10", "I can be easily influenced by other team members.");
+INSERT INTO questions (number, question) VALUES ("11", "I enjoy working with people outside of the team to help achieve team goals.");
+INSERT INTO questions (number, question) VALUES ("12", "I can lose interest in projects when they no longer excite me.");
+INSERT INTO questions (number, question) VALUES ("13", "I like to think outside the box and thrive on praise from others.");
+INSERT INTO questions (number, question) VALUES ("14", "I find that my ideas are usually better than team mates' ideas.");
+INSERT INTO questions (number, question) VALUES ("15", "I'm good at strategic planning, as I can objectively analyse ideas.");
+INSERT INTO questions (number, question) VALUES ("16", "I find it difficult to motivate myself and to inspire others around me.");
+INSERT INTO questions (number, question) VALUES ("17", "I like to focus exclusively on my area of expertise.");
+INSERT INTO questions (number, question) VALUES ("18", "I would rather concentrate on my own work than the big picture.");
+INSERT INTO questions (number, question) VALUES ("19", "I have previous programming knowledge and/or experience.");
 
-INSERT INTO questions (number, question, quesOrTest) VALUES ("20", "Is the Java expression 'int mynum = 27.89;' a valid one?", "t");
-INSERT INTO questions (number, question, quesOrTest) VALUES ("21", "Is C# the language used for querying databases?", "t");
-INSERT INTO questions (number, question, quesOrTest) VALUES ("22", "Does the Python expression 'count ++' increase the value of count by 1?", "t");
+INSERT INTO questions (number, question) VALUES ("20", "Is the Java expression 'int mynum = 27.89;' a valid one?");
+INSERT INTO questions (number, question) VALUES ("21", "Is C# the language used for querying databases?");
+INSERT INTO questions (number, question) VALUES ("22", "Does the Python expression 'count ++' increase the value of count by 1?");
 
 
 

@@ -58,7 +58,7 @@ public class SQLite
         try {
           Class.forName("org.sqlite.JDBC");
           c = DriverManager.getConnection("jdbc:sqlite:src/resources/SE.db");
-          System.out.println("Opened database successfully");
+          //System.out.println("Opened database successfully");
           c.setAutoCommit(false);
           
           stmt = c.createStatement();
@@ -84,7 +84,7 @@ public class SQLite
       Class.forName("org.sqlite.JDBC");
       c = DriverManager.getConnection("jdbc:sqlite:src/resources/SE.db");
       c.setAutoCommit(false);
-      System.out.println("Opened database successfully");
+      //System.out.println("Opened database successfully");
 
       stmt = c.createStatement();
       rs = stmt.executeQuery(sql);
@@ -150,7 +150,7 @@ public class SQLite
             questionsID.clear();
             questionsNumber.clear();
             questionsQuestion.clear();
-            questionsQuesOrTest.clear();
+            //questionsQuesOrTest.clear();
         }
         
         ResultSet results = selectStart("SELECT * FROM questions ORDER BY ID;");
@@ -161,7 +161,7 @@ public class SQLite
                 questionsID.add(results.getString("ID"));
                 questionsNumber.add(results.getString("number"));
                 questionsQuestion.add(results.getString("question"));
-                questionsQuesOrTest.add(results.getString("quesOrTest"));
+                //questionsQuesOrTest.add(results.getString("quesOrTest"));
             }
         }
         catch (SQLException ex)
@@ -211,14 +211,14 @@ public class SQLite
                 studentsMemberOfTeam.add(results.getString("memberOfTeam"));
                 studentsPreviousSubject.add(results.getString("previousSubject"));
                 studentsTrSH.add(results.getString("trSH"));
-                studentsTrSH.add(results.getString("trIMP"));
-                studentsTrSH.add(results.getString("trCF"));
-                studentsTrSH.add(results.getString("trCO"));
-                studentsTrSH.add(results.getString("trTW"));
-                studentsTrSH.add(results.getString("trRI"));
-                studentsTrSH.add(results.getString("trPL"));
-                studentsTrSH.add(results.getString("trME"));
-                studentsTrSH.add(results.getString("trSP"));
+                studentsTrIMP.add(results.getString("trIMP"));
+                studentsTrCF.add(results.getString("trCF"));
+                studentsTrCO.add(results.getString("trCO"));
+                studentsTrTW.add(results.getString("trTW"));
+                studentsTrRI.add(results.getString("trRI"));
+                studentsTrPL.add(results.getString("trPL"));
+                studentsTrME.add(results.getString("trME"));
+                studentsTrSP.add(results.getString("trSP"));
                 studentsTeamRole.add(results.getString("teamRole"));
                 studentsTestScore.add(results.getString("testScore"));
                 studentsModuleMark.add(results.getString("moduleMark"));
