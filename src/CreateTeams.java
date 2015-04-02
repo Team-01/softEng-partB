@@ -16,13 +16,16 @@ public class CreateTeams {
     JPanel panelLists = new JPanel(new GridBagLayout());
     
     public ArrayList<Student> Students;
+    private boolean fakeStudents = false;
+    private SQLite dbToUseWhenEventFired;
         
     
     public CreateTeams(SE se)
     {
+        dbToUseWhenEventFired = se.db;
         Random rand = new Random();
-        Students = getFakeStudents(rand.nextInt(16)+10);
-        //Students = getStudentsFromDB(se.db);
+        if (fakeStudents) Students = getFakeStudents(rand.nextInt(16)+10);
+        else Students = getStudentsFromDB(se.db);
 
         // Make main class panel and make it a scrollpane
         JPanel p = new JPanel(new GridBagLayout());
@@ -77,15 +80,25 @@ public class CreateTeams {
             s.ID = db.studentsID.get(i);
             s.averageMark = Integer.parseInt(db.studentsAverageMark.get(i));
             s.name = db.studentsStuName.get(i);
-            //s.fullTime
-            if(i % 6 == 0) s.fullTime = false;
-            else s.fullTime = true;
-            if (db.studentsMemberOfTeam.get(i) != null) s.memberOfTeam = Integer.parseInt(db.studentsMemberOfTeam.get(i));
+            
+            if (db.studentsStuStudyType.get(i).compareTo("FT") == 0) s.fullTime = true;
+            else s.fullTime = false;
+            
+            if (db.studentsMemberOfTeam.get(i) != null) 
+                s.memberOfTeam = Integer.parseInt(db.studentsMemberOfTeam.get(i));
             else s.memberOfTeam = -1;
-            s.moduleMark = Integer.parseInt(db.studentsModuleMark.get(i));
-            s.testScore = Integer.parseInt(db.studentsTestScore.get(i));
+            
+            if (db.studentsModuleMark.get(i) != null)
+                s.moduleMark = Integer.parseInt(db.studentsModuleMark.get(i));
+            else s.moduleMark = -1;
+            
+            if (db.studentsTestScore.get(i) != null)
+                s.testScore = Integer.parseInt(db.studentsTestScore.get(i));
+            else s.testScore = -1;
+            
             if (s.testScore > 0) s.prevExperience = true;
             else s.prevExperience = false;
+            
             s.previousSubject = db.studentsPreviousSubject.get(i);
             s.trCF = Integer.parseInt(db.studentsTrCF.get(i));
             s.trCO = Integer.parseInt(db.studentsTrCO.get(i));
@@ -97,6 +110,9 @@ public class CreateTeams {
             s.trSP = Integer.parseInt(db.studentsTrSP.get(i));
             s.trTW = Integer.parseInt(db.studentsTrTW.get(i));
             s.assignTeamRole();
+            db.modify("update students set teamRole='" + s.teamRole + "' where ID='" + s.ID + "'");
+            db.refresh();
+            
             Students.add(s);
         }
         
@@ -144,8 +160,12 @@ public class CreateTeams {
         for (Student s : Students)
         {
             s.memberOfTeam = (i % numTeams);
+            if (! fakeStudents)
+                dbToUseWhenEventFired.modify("update students set memberOfTeam='"
+                        + s.memberOfTeam + "' where ID='" + s.ID + "'" );
             i++;
         }
+        dbToUseWhenEventFired.refresh();
     }
     private String studentDisplayString(Student s)
     {
@@ -180,6 +200,7 @@ public class CreateTeams {
                     GridBagConstraints gbc = new GridBagConstraints();
                     gbc.gridy = i+1;
                     gbc.insets = new Insets(10, 0, 0, 0);
+                    gbc.anchor = GridBagConstraints.WEST;
                     DefaultListModel listModel = new DefaultListModel();
                     for (Student s : Students)
                     {
