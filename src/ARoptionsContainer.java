@@ -137,7 +137,7 @@ public class ARoptionsContainer extends JPanel implements MouseListener
                 datacontainers[4],
                 arrowBtns[4]);
         
-        datagrids[0] = new ARo1tmAvgDataGrid();
+        datagrids[0] = new ARo1stAvgDataGrid();
         datagrids[1] = new ARo2tmAvgDataGrid();
         datagrids[2] = new ARo3oaAvgDataGrid();
         datagrids[3] = new ARo4stComDataGrid();

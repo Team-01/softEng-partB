@@ -29,6 +29,7 @@ public class ARo1stAvgDataGrid extends JPanel
     JPanel tbl;
     private ArrayList<ArrayList> columnArray;
     SQLite db = new SQLite();
+    FindStudentTemplate blank = new FindStudentTemplate();
     
     public ARo1stAvgDataGrid()
     {
@@ -37,6 +38,7 @@ public class ARo1stAvgDataGrid extends JPanel
     
     public void buildThis()
     {
+        this.setBackground(Color.white);
         layout = new GridBagLayout();
         columnArray = new ArrayList();
         gbc = new GridBagConstraints();
@@ -47,15 +49,17 @@ public class ARo1stAvgDataGrid extends JPanel
         gbc.gridy = 0;
         gbc.weightx = 1;
         gbc.weighty=1;
-        gbc.insets = new Insets(10,50,0,100);
+        gbc.insets = new Insets(10,0,0,30);
         columnArray.add(db.studentsStuName);
+        columnArray.add(db.studentsStuEmail);
         columnArray.add(db.studentsModuleMark);
         columnArray.add(db.studentsAverageMark);
         ArrayList<String> columnsHead = new ArrayList();
         columnsHead.add("Name");
-        columnsHead.add("Year average");
+        columnsHead.add("Email");
         columnsHead.add("Software Eng");
-        tbl = new TableTemplate(columnsHead, columnArray,false);
+        columnsHead.add("Year average");
+        tbl = new TableTemplate(columnsHead, columnArray,false, blank, 2, 3);
         this.add(tbl,gbc);
         revalidate();
     }

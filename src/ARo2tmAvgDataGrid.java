@@ -22,7 +22,7 @@ import javax.swing.JPanel;
  *
  * @author Kit
  */
-public class ARo2tmAvgDataGrid extends JPanel
+public class ARo2tmAvgDataGrid extends ARcommonMethods
 {
     GridBagLayout layout;
     GridBagConstraints gbc;
@@ -32,6 +32,7 @@ public class ARo2tmAvgDataGrid extends JPanel
     ArrayList <String> teamColumn;
     ArrayList <String> yrAvgColumn;
     ArrayList <String> modAvgColumn;
+    FindStudentTemplate blank = new FindStudentTemplate();
     
     public ARo2tmAvgDataGrid()
     {
@@ -70,83 +71,13 @@ public class ARo2tmAvgDataGrid extends JPanel
         columnsHead.add("Team");
         columnsHead.add("Year average");
         columnsHead.add("Software Eng");
-        tbl = new TableTemplate(columnsHead, columnArray,false, 1, 2);
+        tbl = new TableTemplate(columnsHead, columnArray,false,blank, 1, 2);
         this.add(tbl,gbc);
         
         revalidate();
     }
     
-    public ArrayList buildAvgStrArray(
-            ArrayList<String> tmArray,
-            ArrayList<String> stTmArray,
-            ArrayList<String> stMarkArray
-    )
-    {
-        ArrayList<String> arrayOut = new ArrayList();
-
-        if (stTmArray.get(0) == null)
-            {
-                String noData = "0";
-                arrayOut.add(noData);
-            }
-        else
-        {
-            for (int i = 0; i<tmArray.size(); i ++)
-            {
-                String team = tmArray.get(i);
-                int teamMark = 0;
-                for (int student = 0; student<stMarkArray.size(); student++)
-                {
-                    String stTeam = stTmArray.get(student);
-                    int stMark = Integer.parseInt(stMarkArray.get(student));
-                    System.out.println("/"+team);
-                    if (stTeam.equals(team))
-                    {
-                        teamMark += stMark;
-                    }
-                }
-            teamMark /= tmArray.size();
-            arrayOut.add(Integer.toString(teamMark));
-            }
-        }
-        return arrayOut;
-    }
-    
-    public ArrayList buildUniqueStrArray(ArrayList<String> arrayIn)
-    {
-        ArrayList<String> arrayOut = new ArrayList();
-        if (arrayIn.get(0) == null)
-            {
-                String noData = "No data found.";
-                arrayOut.add(noData);
-            }
-        else
-        {
-            for (int i = 0 ; i<arrayIn.size();i++)
-            {
-                boolean duplicate = false;
-                String item = arrayIn.get(i);
-                for (int i2 = 0; i2<arrayOut.size(); i2++)
-                {
-                    if (arrayOut.get(i2).equals(item))
-                    {
-                        duplicate = true;
-                    }
-                }
-                if (duplicate != true)
-                {
-                    arrayOut.add(item);
-                }
-
-            }
-            for (int i = 0; i<arrayOut.size(); i++)
-                {
-                    System.out.println (arrayOut.get(i));
-                }
-        }
-        return arrayOut;
-        
-    }
+  
     
     public JPanel buildLvl1Panel()
     {
