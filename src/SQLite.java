@@ -28,7 +28,7 @@ public class SQLite
     ArrayList<String> studentsID = new ArrayList<String>();
     ArrayList<String> studentsStuID = new ArrayList<String>();
     ArrayList<String> studentsStuName = new ArrayList<String>();
-    ArrayList<String> studentsStuPhone = new ArrayList<String>();
+    ArrayList<String> studentsStuStudyType = new ArrayList<String>();
     ArrayList<String> studentsStuEmail = new ArrayList<String>();
     ArrayList<String> studentsMemberOfTeam = new ArrayList<String>();
     ArrayList<String> studentsPreviousSubject = new ArrayList<String>();
@@ -41,6 +41,7 @@ public class SQLite
     ArrayList<String> studentsTrPL = new ArrayList<String>();
     ArrayList<String> studentsTrME = new ArrayList<String>();
     ArrayList<String> studentsTrSP = new ArrayList<String>();
+    ArrayList<String> studentsTeamRole = new ArrayList<String>();
     ArrayList<String> studentsTestScore = new ArrayList<String>();
     ArrayList<String> studentsModuleMark = new ArrayList<String>();
     ArrayList<String> studentsAverageMark = new ArrayList<String>();
@@ -57,7 +58,7 @@ public class SQLite
         try {
           Class.forName("org.sqlite.JDBC");
           c = DriverManager.getConnection("jdbc:sqlite:src/resources/SE.db");
-          System.out.println("Opened database successfully");
+          //System.out.println("Opened database successfully");
           c.setAutoCommit(false);
           
           stmt = c.createStatement();
@@ -83,7 +84,7 @@ public class SQLite
       Class.forName("org.sqlite.JDBC");
       c = DriverManager.getConnection("jdbc:sqlite:src/resources/SE.db");
       c.setAutoCommit(false);
-      System.out.println("Opened database successfully");
+      //System.out.println("Opened database successfully");
 
       stmt = c.createStatement();
       rs = stmt.executeQuery(sql);
@@ -149,7 +150,7 @@ public class SQLite
             questionsID.clear();
             questionsNumber.clear();
             questionsQuestion.clear();
-            questionsQuesOrTest.clear();
+            //questionsQuesOrTest.clear();
         }
         
         ResultSet results = selectStart("SELECT * FROM questions ORDER BY ID;");
@@ -160,7 +161,7 @@ public class SQLite
                 questionsID.add(results.getString("ID"));
                 questionsNumber.add(results.getString("number"));
                 questionsQuestion.add(results.getString("question"));
-                questionsQuesOrTest.add(results.getString("quesOrTest"));
+                //questionsQuesOrTest.add(results.getString("quesOrTest"));
             }
         }
         catch (SQLException ex)
@@ -178,7 +179,7 @@ public class SQLite
             studentsID.clear();
             studentsStuID.clear();
             studentsStuName.clear();
-            studentsStuPhone.clear();
+            studentsStuStudyType.clear();
             studentsStuEmail.clear();
             studentsMemberOfTeam.clear();
             studentsPreviousSubject.clear();
@@ -191,6 +192,7 @@ public class SQLite
             studentsTrPL.clear();
             studentsTrME.clear();
             studentsTrSP.clear();
+            studentsTeamRole.clear();
             studentsTestScore.clear();
             studentsModuleMark.clear();
             studentsAverageMark.clear();
@@ -204,7 +206,7 @@ public class SQLite
                 studentsID.add(results.getString("ID"));
                 studentsStuID.add(results.getString("stuID"));
                 studentsStuName.add(results.getString("stuName"));
-                studentsStuPhone.add(results.getString("stuPhone"));
+                studentsStuStudyType.add(results.getString("stuStudyType"));
                 studentsStuEmail.add(results.getString("stuEmail"));
                 studentsMemberOfTeam.add(results.getString("memberOfTeam"));
                 studentsPreviousSubject.add(results.getString("previousSubject"));
@@ -217,6 +219,7 @@ public class SQLite
                 studentsTrPL.add(results.getString("trPL"));
                 studentsTrME.add(results.getString("trME"));
                 studentsTrSP.add(results.getString("trSP"));
+                studentsTeamRole.add(results.getString("teamRole"));
                 studentsTestScore.add(results.getString("testScore"));
                 studentsModuleMark.add(results.getString("moduleMark"));
                 studentsAverageMark.add(results.getString("averageMark"));

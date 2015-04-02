@@ -7,9 +7,12 @@
 
 import static java.awt.BorderLayout.PAGE_START;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import static java.awt.GridBagConstraints.NORTH;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JLabel;
@@ -21,51 +24,134 @@ import javax.swing.JPanel;
  */
 public class ARo3oaAvgDataGrid extends JPanel
 {
-    private GridBagLayout layout;
-    private ARData data;
-    private JLabel[] studentNames;
-    private GridBagConstraints gbc;
-   
-    public ARo3oaAvgDataGrid() 
+    GridBagLayout layout;
+    GridBagConstraints gbc;
+    JPanel tbl;
+    SQLite db = new SQLite();
+    Style mainStyle = new Style();
+    
+    Double yrAverage;
+    Double modMarkAvg;
+    Double avgDifference;
+    
+    String indicator;
+    
+    JLabel modAvgLbl;
+    JLabel yrAvgLbl;
+    JLabel avgDiffLbl;     
+    
+    public ARo3oaAvgDataGrid()
     {
-        //layout settings
-        this.setBackground(Color.white);
-        layout = new GridBagLayout();
-        this.setLayout(layout);
-        gbc = new GridBagConstraints();
-        
-        gbc.anchor = GridBagConstraints.NORTH;
-        gbc.weighty=1;
-        gbc.gridx = 0;
-	gbc.gridy = 0;
-        //grab student data to fill grid with
-        data = new ARData();
-        studentNames = data.students;
-        
-        //add to grid
-        fillStudentNames(studentNames);
+        buildThis();
     }
     
-    public void fillStudentNames(JLabel[] labelsArray) 
+    public void buildThis()
     {
+        this.setBackground(Color.white);
+        layout = new GridBagLayout();
+        gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.BOTH;
+        this.setLayout(layout);
+        gbc.anchor = GridBagConstraints.NORTHWEST;
+        gbc.gridx = 0;
         gbc.gridy = 0;
-        for (int student=0; student<=labelsArray.length-1; student++)
-        {
-            this.add(labelsArray[student],gbc);
-            gbc.gridy++;
-            //setBackground(Color.yellow);
-            
-        }
+        gbc.weightx = 1;
+        gbc.weighty=1;
+        gbc.insets = new Insets(10,0,0,30);
+        
+        yrAverage = avgArray(db.studentsAverageMark);
+        modMarkAvg = avgArray(db.studentsModuleMark);
+        avgDifference = scoreDifference(modMarkAvg, yrAverage);
+        
+        indicator = differenceIndicator(modMarkAvg, yrAverage);
+        
+        modAvgLbl = buildLbl("<html>"
+                + "The overall <b>module average</b> for the class is <b>" 
+                + modMarkAvg + "%</b>.</html>");
+        yrAvgLbl = buildLbl("<html>" 
+                + "The overall <b>year average</b> for the class is <b>"
+                + yrAverage + "%</b>.</html>");
+        avgDiffLbl = buildLbl("<html>"
+                + "In comparison the module average was <b>"
+                + avgDifference + "% " + indicator + "</b>.</html>"); 
+        
+        gbc.gridy = 1;
+        gbc.insets = new Insets(10,50,20,10);
+        this.add(modAvgLbl,gbc);
+        gbc.gridy = 2;
+        this.add(yrAvgLbl,gbc);
+        gbc.gridy = 3;
+        this.add(avgDiffLbl,gbc);
+        revalidate();
     }
+    
+    public JLabel buildLbl(String text)
+    {
+        JLabel label = new JLabel(text);
+        label.setFont(mainStyle.fontM);
+        label.setForeground(mainStyle.systemExtraDarkGrey);
+        return label;
+    }
+    
+    public double avgArray(ArrayList<String> arrayIn)
+    {
+        double total = 0;
+        for (int i=0; i<arrayIn.size(); i++)
+        {
+            double number = Double.parseDouble(arrayIn.get(i));
+            total+=number;
+        }
+        double average = total/arrayIn.size();
+        return average;
+    }
+    
+    public double scoreDifference(double n1, double n2)
+    {
+        if (n1>n2)
+        {
+            return n1-n2;
+        }
+        else if (n1<n2)
+        {
+            return n2-n1;
+        }
+        else
+            return 0;
+    }
+    
+    public String differenceIndicator(double n1, double n2)
+    {
+        if (n1>n2)
+        {
+            return "higher";
+        }
+        else if (n1<n2)
+        {
+            return "lower";
+        }
+        else
+            return "the same.";
+    }
+    
+    public JPanel buildLvl1Panel()
+    {
+        JPanel panelLvl1gb = new JPanel();
+        panelLvl1gb.setBackground(Color.white);
+        panelLvl1gb.setLayout(layout);
+        return panelLvl1gb;
+    }
+    
+
     
         /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         //for testing of file only
-        //JFrameForTest jframe = new JFrameForTest();
+        ARjFrameForTest jframe = new ARjFrameForTest();
         ARo3oaAvgDataGrid datagrid = new ARo3oaAvgDataGrid();
-        //jframe.add(datagrid);
+        jframe.add(datagrid);
+        jframe.setVisible(true);
     }
 
 }

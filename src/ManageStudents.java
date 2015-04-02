@@ -1,4 +1,4 @@
-import javax.swing.border.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -10,10 +10,9 @@ public class ManageStudents
     JPanel p;
     JScrollPane sp;
     Style mainStyle = new Style();
-    SQLite db = new SQLite();
     JPanel tableP;
     
-    public ManageStudents(SE se)
+    public ManageStudents(final SE se)
     {
         // Make main class panel and make it a scrollpane
         JPanel p = new JPanel();
@@ -38,9 +37,9 @@ public class ManageStudents
         
         JLabel headerL1 = new JLabel("Student ID");
         JLabel headerL2 = new JLabel("Student Name");
-        JLabel headerL3 = new JLabel("Member of Team");
-        JLabel headerL4 = new JLabel("Module Mark");
-        JLabel headerL5 = new JLabel("Average Mark");
+        JLabel headerL3 = new JLabel("Previous Subject");
+        JLabel headerL4 = new JLabel("Study Type");
+        JLabel headerL5 = new JLabel("Email Address");
         JLabel headerL6 = new JLabel("Delete Student");
         JLabel headerL7 = new JLabel("Update Student");
         
@@ -55,20 +54,25 @@ public class ManageStudents
             headerP.add(header);
         }
         
-        for (int stuCount = 0; stuCount < db.studentsID.size(); stuCount++)
+        for (int stuCount = 0; stuCount < se.db.studentsID.size(); stuCount++)
         {
             final JPanel studentP = new JPanel(new GridLayout(0,7));
             studentP.setBackground(Color.white);
             studentP.setBorder(mainStyle.borderCustom(2, 2, 2, 2));
             tableP.add(studentP);
             
-            final String currentID = db.studentsStuID.get(stuCount);
+            final String currentID = se.db.studentsStuID.get(stuCount);
             
             final JTextField ID = new JTextField(currentID);
-            final JTextField Name = new JTextField(db.studentsStuName.get(stuCount));
-            final JTextField Team = new JTextField(db.studentsMemberOfTeam.get(stuCount));
-            final JTextField ModuleMark = new JTextField(db.studentsModuleMark.get(stuCount));
-            final JTextField AverageMark = new JTextField(db.studentsAverageMark.get(stuCount));
+            final JTextField Name = new JTextField(se.db.studentsStuName.get(stuCount));
+            final JComboBox PreviousSubject = new JComboBox();
+            PreviousSubject.addItem("Business"); PreviousSubject.addItem("Engineering"); PreviousSubject.addItem("Science");
+            PreviousSubject.addItem("Art"); PreviousSubject.addItem("Technology"); PreviousSubject.addItem("Other");
+            PreviousSubject.setSelectedItem(se.db.studentsPreviousSubject.get(stuCount));
+            final JComboBox StudyType = new JComboBox();
+            StudyType.addItem("FT"); StudyType.addItem("PT");
+            StudyType.setSelectedItem(se.db.studentsStuStudyType.get(stuCount));
+            final JTextField Email = new JTextField(se.db.studentsStuEmail.get(stuCount));
             
             // Add buttons
             JButton Delete = new JButton("Delete");
@@ -78,7 +82,7 @@ public class ManageStudents
                 public void actionPerformed(ActionEvent e) 
                 {
                     // Remove student from DB
-                    db.modify("DELETE FROM students WHERE stuID='"+currentID+"';");
+                    se.db.modify("DELETE FROM students WHERE stuID='"+currentID+"';");
                     
                     // Remove from panel and repaint
                     tableP.remove(studentP);
@@ -95,10 +99,13 @@ public class ManageStudents
                 public void actionPerformed(ActionEvent e) 
                 {
                     // Update DB record for current student
-                    db.modify("UPDATE students SET stuID='"+ID.getText()+"', stuName='"+Name.getText()+"',"
-                            + "memberOfTeam='"+Team.getText()+"', moduleMark='"+ModuleMark.getText()+"', "
-                            + "averageMark='"+AverageMark.getText()+"'"
+                    se.db.modify("UPDATE students SET stuID='"+ID.getText()+"', stuName='"+Name.getText()+"',"
+                            + "previousSubject='"+PreviousSubject.getSelectedItem().toString()+"', stuStudyType='"+StudyType.getSelectedItem().toString()+"', "
+                            + "stuEmail='"+Email.getText()+"'"
                             + "WHERE stuID='"+currentID+"';");
+                    
+                    // Show confirmation message
+                    mainStyle.createPopUpFrame("Student data successfully updated.", 350, 150);
                 }
                 
             });
@@ -106,16 +113,11 @@ public class ManageStudents
             // Add all components to panel
             studentP.add(ID);
             studentP.add(Name);
-            studentP.add(Team);
-            studentP.add(ModuleMark);
-            studentP.add(AverageMark);
+            studentP.add(PreviousSubject);
+            studentP.add(StudyType);
+            studentP.add(Email);
             studentP.add(Delete);
-            studentP.add(Update);
-            
-            
+            studentP.add(Update);   
         }
-        
-        
-        
     }
 }

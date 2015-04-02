@@ -10,7 +10,6 @@ public class Questionnaire {
     JScrollPane sp;
     
     Style mainStyle = new Style();  // Create an instance of the Style class for accessing system styles
-    SQLite db = new SQLite(); // Create an instance of SQLite class for working on database
     // Create an array list of all buttons (so 95 in total: 5 buttons * 19 questons) to feed answer to database
     ArrayList<JRadioButton> allButtons = new ArrayList<JRadioButton>();
     // Create an array list of all button groups, so can be used in action listener for resetting questionnaire
@@ -18,16 +17,17 @@ public class Questionnaire {
     JTextField textStuID;
     JTextField textStuName;
     JComboBox cbStuSubject;
-    JTextField textStuPhone;
+    JComboBox cbStuStudyType;
     JTextField textStuEmail;
     String currentStudentID;
     String currentStudentName;
-    String currentStudentPhone;
     String currentStudentEmail;
     // Create array list of all previous subjects to be shown in combobox
     ArrayList<String> prevSubjects = new ArrayList<String>();
+    // Panels for questions
+    JPanel pQuestion;
     
-    public Questionnaire(SE se)
+    public Questionnaire(final SE se)
     {
    
         // Make the panel and GBC
@@ -48,7 +48,7 @@ public class Questionnaire {
         prevSubjects.add("Science");
         prevSubjects.add("Art");
         prevSubjects.add("Technology");
-        prevSubjects.add("Humanities");
+        prevSubjects.add("Other");
         
         
         // Create the pStuInfo panel
@@ -83,13 +83,13 @@ public class Questionnaire {
             cbStuSubject.addItem(subject);
         }
         
-        // Create stu Phone label + text field
-        JLabel labelStuPhone = new JLabel("  Phone:");
-        labelStuPhone.setForeground(mainStyle.systemExtraDarkGrey);
-        textStuPhone = new JTextField("e.g. 07860838577");
-        textStuPhone.setPreferredSize( new Dimension( 140, 25 ) );
-        //Empty text field when clicked on
-        textStuPhone.addMouseListener(new MouseAdapter(){@Override public void mouseClicked(MouseEvent e){textStuPhone.setText("");}});
+        // Create stu study type label + text field
+        JLabel labelStuStudyType = new JLabel("  Study type:");
+        labelStuStudyType.setForeground(mainStyle.systemExtraDarkGrey);
+        cbStuStudyType = new JComboBox();
+        cbStuStudyType.setPreferredSize( new Dimension( 140, 25 ) );
+        cbStuStudyType.addItem("FT");
+        cbStuStudyType.addItem("PT");
         
         // Create stu Name label + text field
         JLabel labelStuEmail = new JLabel("  Email:");
@@ -105,7 +105,7 @@ public class Questionnaire {
         pStuInfo.add(labelStuID); pStuInfo.add(textStuID); 
         pStuInfo.add(labelStuName); pStuInfo.add(textStuName);
         pStuInfo.add(labelStuPrevSubject); pStuInfo.add(cbStuSubject);
-        pStuInfo.add(labelStuPhone); pStuInfo.add(textStuPhone);
+        pStuInfo.add(labelStuStudyType); pStuInfo.add(cbStuStudyType);
         pStuInfo.add(labelStuEmail); pStuInfo.add(textStuEmail);
         p.add(pStuInfo, gbc1); // add stu id panel to p
         
@@ -139,15 +139,15 @@ public class Questionnaire {
         int gridCountQuestion = 0; // a count to ensure each question is printed beneath the previous
         
         // Use selectQuestions method on database to fill the questions arrayLists with data
-        db.selectQuestions();
+        se.db.selectQuestions();
         
-        while (qCount < db.questionsID.size()-3)
+        while (qCount < se.db.questionsID.size()-3) // -3 because test questions
         {
             // Create a panel for each Q box
             JPanel pQBox = new JPanel(new GridLayout(0,1));
             EmptyBorder borderQBox = new EmptyBorder(30, 20, 30, 20);
             pQBox.setBorder(borderQBox);
-            JPanel pQuestion = new JPanel();
+            pQuestion = new JPanel();
             JPanel pAnswers = new JPanel(new GridBagLayout());
             
             // Set colour for panels
@@ -156,7 +156,7 @@ public class Questionnaire {
             pAnswers.setBackground(Color.white);
             
             // Create question (set it to bold) and add to panel
-            JLabel question = new JLabel("Q"+db.questionsNumber.get(qCount)+". "+db.questionsQuestion.get(qCount));
+            JLabel question = new JLabel("Q"+se.db.questionsNumber.get(qCount)+". "+se.db.questionsQuestion.get(qCount));
             question.setFont(mainStyle.fontM);
             question.setForeground(mainStyle.systemColor);
             pQuestion.add(question, gbc2);
@@ -200,12 +200,9 @@ public class Questionnaire {
         EmptyBorder borderSubmitQ = new EmptyBorder(10, 20, 40, 20);
         pSubmitQ.setBorder(borderSubmitQ);
         JButton bSubmitQ = new JButton("Submit");
-        bSubmitQ.addActionListener(new questionnaireSubmit());
         pSubmitQ.add(bSubmitQ, BorderLayout.EAST);
         p.add(pSubmitQ, gbc1);
-    }
-    
-    class questionnaireSubmit implements ActionListener
+        bSubmitQ.addActionListener(new ActionListener()
         {
             /* This action listener:
                 
@@ -234,8 +231,8 @@ public class Questionnaire {
                 {
                     
                     // finds if stu ID is unique
-                    db.selectStudents();
-                    if (db.studentsStuID.contains(textStuID.getText()) == true)
+                    se.db.selectStudents();
+                    if (se.db.studentsStuID.contains(textStuID.getText()) == true)
                     {
                         // Custom method in style class for creating consistently styled pop-up boxes
                         mainStyle.createPopUpFrame("The Student ID you entered already exists.", 350, 150);
@@ -245,7 +242,6 @@ public class Questionnaire {
                         // variables for getting the text from student info text fields
                         currentStudentID = textStuID.getText();
                         currentStudentName = textStuName.getText();
-                        currentStudentPhone = textStuPhone.getText();
                         currentStudentEmail = textStuEmail.getText();
 
                         // Create variables to hold scores for each TeamRole
@@ -291,8 +287,8 @@ public class Questionnaire {
 
 
                         // Create a record for currentStudent in students table within DB with number and TeamRole scores
-                        db.modify("INSERT INTO students (stuID, stuName, stuPhone, stuEmail, previousSubject, trSH, trIMP, trCF, trCO, trTW, trRI, trPL, trME, trSP)"
-                                + "VALUES ('"+currentStudentID+"', '"+currentStudentName+"', '"+currentStudentPhone+"', '"+currentStudentEmail+"','"+cbStuSubject.getSelectedItem()+"', "
+                        se.db.modify("INSERT INTO students (stuID, stuName, stuStudyType, stuEmail, previousSubject, trSH, trIMP, trCF, trCO, trTW, trRI, trPL, trME, trSP)"
+                                + "VALUES ('"+currentStudentID+"', '"+currentStudentName+"', '"+cbStuStudyType.getSelectedItem()+"', '"+currentStudentEmail+"','"+cbStuSubject.getSelectedItem()+"', "
                                 +SHscore+", "+IMPscore+", "+CFscore+", "+COscore+", "+TWscore
                                 +","+RIscore+", "+PLscore+", "+MEscore+", "+SPscore+")");
 
@@ -317,7 +313,7 @@ public class Questionnaire {
                             textStuID.setText("e.g. C0815038");
                             textStuName.setText("e.g. Joe Bloggs");
                             cbStuSubject.setSelectedIndex(0);
-                            textStuPhone.setText("e.g. 07860838577");
+                            cbStuStudyType.setSelectedIndex(0);
                             textStuEmail.setText("e.g. joebloggs@email.com");
 
                         // Clear selection of all button groups
@@ -335,7 +331,8 @@ public class Questionnaire {
                 
             }
             
-            
-        }
-        
+         
+        });
+    }
+
 }
