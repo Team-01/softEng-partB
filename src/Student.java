@@ -37,7 +37,7 @@ public class Student extends User
     public void print()
     {
         String printString;
-        printString = "ID=" + ID + ", firstName=" + firstName + ", lastName=" + lastName +
+        printString = "ID=" + ID + ", Name=" + name +
                 "\nfullTime=" + fullTime + ", prevExperience=" + prevExperience +
                 "\nmemberOfTeam =" + memberOfTeam + ", previousSubject=" + previousSubject +
                 "\ntrSH=" + trSH + ", trIMP=" + trIMP + ", trCF=" + trCF +

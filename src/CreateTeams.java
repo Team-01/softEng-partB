@@ -22,6 +22,7 @@ public class CreateTeams {
     {
         Random rand = new Random();
         Students = getFakeStudents(rand.nextInt(16)+10);
+        //Students = getStudentsFromDB(se.db);
 
         // Make main class panel and make it a scrollpane
         JPanel p = new JPanel(new GridBagLayout());
@@ -65,11 +66,40 @@ public class CreateTeams {
         
     }
     
-    private ArrayList<Student> convertStudentArraysToObjects()
+    private ArrayList<Student> getStudentsFromDB(SQLite db)
     {
         ArrayList<Student> Students = new ArrayList();
         
-        //for (int i = 0; i < )
+        db.refresh();
+        for (int i = 0; i < db.studentsID.size(); i++)
+        {
+            Student s = new Student();
+            s.ID = db.studentsID.get(i);
+            s.averageMark = Integer.parseInt(db.studentsAverageMark.get(i));
+            s.name = db.studentsStuName.get(i);
+            //s.fullTime
+            if(i % 6 == 0) s.fullTime = false;
+            else s.fullTime = true;
+            if (db.studentsMemberOfTeam.get(i) != null) s.memberOfTeam = Integer.parseInt(db.studentsMemberOfTeam.get(i));
+            else s.memberOfTeam = -1;
+            s.moduleMark = Integer.parseInt(db.studentsModuleMark.get(i));
+            s.testScore = Integer.parseInt(db.studentsTestScore.get(i));
+            if (s.testScore > 0) s.prevExperience = true;
+            else s.prevExperience = false;
+            s.previousSubject = db.studentsPreviousSubject.get(i);
+            s.trCF = Integer.parseInt(db.studentsTrCF.get(i));
+            s.trCO = Integer.parseInt(db.studentsTrCO.get(i));
+            s.trIMP = Integer.parseInt(db.studentsTrIMP.get(i));
+            s.trME = Integer.parseInt(db.studentsTrME.get(i));
+            s.trPL = Integer.parseInt(db.studentsTrPL.get(i));
+            s.trRI = Integer.parseInt(db.studentsTrRI.get(i));
+            s.trSH = Integer.parseInt(db.studentsTrSH.get(i));
+            s.trSP = Integer.parseInt(db.studentsTrSP.get(i));
+            s.trTW = Integer.parseInt(db.studentsTrTW.get(i));
+            s.assignTeamRole();
+            Students.add(s);
+        }
+        
         
         return Students;
     }
@@ -83,8 +113,7 @@ public class CreateTeams {
         {
             Student newStudent = new Student();
             newStudent.ID = String.valueOf(i);
-            newStudent.firstName = "Student";
-            newStudent.lastName = String.valueOf(i);
+            newStudent.name = "Student";
             if(i % 6 == 0) newStudent.fullTime = false;
             else newStudent.fullTime = true;
             if (i % 3 == 0) newStudent.prevExperience = false;
@@ -123,7 +152,7 @@ public class CreateTeams {
         String ft;
         if (s.fullTime) ft = "FT";
         else ft = "PT";
-        String displayString = s.firstName + " " + s.lastName + " (" +
+        String displayString = s.name + " " + " (" +
                 ft + ", Test Score: " + s.testScore + ", Team Role: " +
                 s.teamRole + ")";
         return displayString;

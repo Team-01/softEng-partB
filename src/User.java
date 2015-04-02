@@ -11,8 +11,7 @@
 public class User
 {
     String ID;
-    String firstName;
-    String lastName;
+    String name;
     int groupOrder;
     
     public User()
