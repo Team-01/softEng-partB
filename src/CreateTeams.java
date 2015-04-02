@@ -9,15 +9,19 @@ public class CreateTeams {
     JScrollPane sp; 
     Style mainStyle = new Style();
     
-    private JPanel panelButtons = new JPanel();
     private String strComboNumTeams = "comboNumTeams";
     private JComboBox comboNumTeams = new JComboBox();
+    private String strCheckGroupPartTime = "checkGroupPartTime";
+    private JCheckBox checkGroupPartTime = new JCheckBox("Group part time");
     
-    JPanel panelLists = new JPanel(new GridBagLayout());
+    private JPanel panelLists = new JPanel(new GridBagLayout());
+    private JPanel panelButtons = new JPanel(new GridBagLayout());
     
     public ArrayList<Student> Students;
-    private boolean fakeStudents = false;
+    public int numTeams;
+    private boolean fakeStudents = true;
     private SQLite dbToUseWhenEventFired;
+    private boolean groupPartTime = false;
         
     
     public CreateTeams(SE se)
@@ -39,9 +43,23 @@ public class CreateTeams {
             comboNumTeams.addItem(opt);
         }
         
+        listenerButtons lButtons = new listenerButtons();
         comboNumTeams.setActionCommand(strComboNumTeams);
-        comboNumTeams.addActionListener(new listenerButtons());
-        panelButtons.add(comboNumTeams, BorderLayout.EAST);
+        comboNumTeams.addActionListener(lButtons);
+        
+        GridBagConstraints gbcButtons = new GridBagConstraints();
+        gbcButtons.anchor = GridBagConstraints.EAST;
+        gbcButtons.gridy = 0;
+        gbcButtons.insets = new Insets(10, 0, 0, 0);
+        panelButtons.add(comboNumTeams, gbcButtons);
+        
+        checkGroupPartTime.setHorizontalTextPosition(SwingConstants.LEFT);
+        checkGroupPartTime.setActionCommand(strCheckGroupPartTime);
+        checkGroupPartTime.addActionListener(lButtons);
+        
+        gbcButtons.gridy = gbcButtons.gridy + 1;
+        panelButtons.add(checkGroupPartTime, gbcButtons);
+        
                 
         GridBagConstraints gbcPanelLists = new GridBagConstraints();
         gbcPanelLists.anchor = GridBagConstraints.PAGE_START;
@@ -49,13 +67,15 @@ public class CreateTeams {
         gbcPanelLists.weighty = 0.5;
         gbcPanelLists.insets = new Insets(0, 10, 10, 0);
         
+        p.add(panelLists, gbcPanelLists);
+        
+        
         GridBagConstraints gbcPanelButtons = new GridBagConstraints();
         gbcPanelButtons.anchor = GridBagConstraints.FIRST_LINE_END;
         gbcPanelButtons.gridy = 0;
         gbcPanelButtons.weighty = 0.5;
         gbcPanelButtons.insets = new Insets(0, 10, 10, 0);
-        
-        p.add(panelLists, gbcPanelLists);
+ 
         p.add(panelButtons, gbcPanelButtons);
         
         sp = new JScrollPane(p);
@@ -160,10 +180,43 @@ public class CreateTeams {
         for (Student s : Students)
         {
             s.memberOfTeam = (i % numTeams);
+
             if (! fakeStudents)
                 dbToUseWhenEventFired.modify("update students set memberOfTeam='"
                         + s.memberOfTeam + "' where ID='" + s.ID + "'" );
             i++;
+        }
+        
+        if (groupPartTime)
+        {
+            for (Student s : Students)
+            {
+                if (s.fullTime == false && s.memberOfTeam > 0)
+                {
+                    int originalTeam = s.memberOfTeam;
+                    s.memberOfTeam = 0;
+                    
+                    if (! fakeStudents)
+                        dbToUseWhenEventFired.modify("update students set memberOfTeam='"
+                        + s.memberOfTeam + "' where ID='" + s.ID + "'" );
+                    
+                    boolean swapped = false;
+                    i = 0;
+                    while (! swapped)
+                    {
+                        if (Students.get(i).fullTime == true &&
+                                Students.get(i).memberOfTeam == 0)
+                        {
+                            Students.get(i).memberOfTeam = originalTeam;
+                            swapped = true;
+                            if (! fakeStudents)
+                                dbToUseWhenEventFired.modify("update students set memberOfTeam='"
+                                + Students.get(i).memberOfTeam + "' where ID='" + Students.get(i).ID + "'" );
+                        }
+                        i++;
+                    }
+                }
+            }
         }
         dbToUseWhenEventFired.refresh();
     }
@@ -178,45 +231,63 @@ public class CreateTeams {
         return displayString;
     }
     
+    private void refreshTeamLists()
+    {
+        
+        panelLists.removeAll();
+
+        GroupStudents group = new GroupStudents();
+        //group by test score and team role to mix the experience and
+        //person type up amongst the teams
+        group.group(Students, group.BY_TEST_SCORE + group.BY_TEAM_ROLE);
+        assignTeams(numTeams);
+
+        for (int i = 0; i < numTeams; i++)
+        {
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.gridy = i+1;
+            gbc.insets = new Insets(10, 0, 0, 10);
+            gbc.anchor = GridBagConstraints.WEST;
+
+            JLabel teamLabel = new JLabel("Team " + i);
+            teamLabel.setForeground(mainStyle.systemColor);
+            teamLabel.setFont(mainStyle.fontM);
+
+            DefaultListModel listModel = new DefaultListModel();
+            for (Student s : Students)
+            {
+                if (s.memberOfTeam == i)
+                {
+                    String str = studentDisplayString(s);
+                    listModel.addElement(str);
+                }
+
+            }
+            JList list = new JList(listModel);
+            panelLists.add(teamLabel, gbc);
+            panelLists.add(list, gbc);
+        }
+
+        sp.validate();
+        sp.repaint();
+    }
     private class listenerButtons implements ActionListener
     {
         public void actionPerformed(ActionEvent e)
         {
             String cmd = e.getActionCommand();
-            if (cmd.equals(strComboNumTeams))
+            if (cmd.compareTo(strComboNumTeams) == 0)
             {
-                panelLists.removeAll();
                 JComboBox comboBox = (JComboBox)e.getSource();
-                int numTeams = Integer.parseInt(comboBox.getSelectedItem().toString());
-                
-                GroupStudents group = new GroupStudents();
-                //group by test score and team role to mix the experience and
-                //person type up amongst the teams
-                group.group(Students, group.BY_TEST_SCORE + group.BY_TEAM_ROLE);
-                assignTeams(numTeams);
-                
-                for (int i = 0; i < numTeams; i++)
-                {
-                    GridBagConstraints gbc = new GridBagConstraints();
-                    gbc.gridy = i+1;
-                    gbc.insets = new Insets(10, 0, 0, 0);
-                    gbc.anchor = GridBagConstraints.WEST;
-                    DefaultListModel listModel = new DefaultListModel();
-                    for (Student s : Students)
-                    {
-                        if (s.memberOfTeam == i)
-                        {
-                            String str = studentDisplayString(s);
-                            listModel.addElement(str);
-                        }
-                            
-                    }
-                    JList list = new JList(listModel);
-                    panelLists.add(list, gbc);
-                }
-                
-                sp.validate();
-                sp.repaint();
+                numTeams = Integer.parseInt(comboBox.getSelectedItem().toString());
+                refreshTeamLists();
+            }
+            else if (cmd.compareTo(strCheckGroupPartTime) == 0)
+            {
+                JCheckBox checkBox = (JCheckBox)e.getSource();
+                if (checkBox.isSelected()) groupPartTime = true;
+                else groupPartTime = false;
+                refreshTeamLists();
             }
         }
     }
