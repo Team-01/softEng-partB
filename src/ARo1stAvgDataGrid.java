@@ -33,14 +33,19 @@ public class ARo1stAvgDataGrid extends JPanel
     
     public ARo1stAvgDataGrid()
     {
-        buildThis();
+        
     }
     
     public void buildThis()
     {
+        if (tbl!=null)
+        {
+            this.remove(tbl);
+        }
+        db = new SQLite();
+        columnArray = new ArrayList();
         this.setBackground(Color.white);
         layout = new GridBagLayout();
-        columnArray = new ArrayList();
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         this.setLayout(layout);
@@ -62,6 +67,11 @@ public class ARo1stAvgDataGrid extends JPanel
         tbl = new TableTemplate(columnsHead, columnArray,false, blank, 2, 3);
         this.add(tbl,gbc);
         revalidate();
+    }
+    
+    public void setData()
+    {
+
     }
     
     public JPanel buildLvl1Panel()

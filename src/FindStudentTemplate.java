@@ -40,7 +40,7 @@ public class FindStudentTemplate extends JPanel implements MouseListener
     private GridBagConstraints tablegbc;
     private int stRowSelected;
     private GridBagLayout layout;
-    SQLite db = new SQLite(); // Create an instance of SQLite class for working on database
+    SQLite db; // Create an instance of SQLite class for working on database
     private JLabel enterEmailLbl;
     public JPanel enterEmailBtnPanel;
     private JLabel enterEmailBtn;
@@ -232,9 +232,23 @@ public class FindStudentTemplate extends JPanel implements MouseListener
         
     }
     
+    public void addTbl()
+    {
+        if (stTable!=null)
+        {
+            
+            dataViewLvl1Panel.remove(stTable); 
+        }
+        addDataViewLvl1Panels();
+        createStTbl();
+        dataViewLvl1Panel.add(stTable, gbcdataview);
+        revalidate();
+    }
+    
     public void createStTbl()
     {
-        gbcdataview = new GridBagConstraints();
+        db = new SQLite();
+        
         stNameArray = db.studentsStuName;
         stEmailArray = db.studentsStuEmail;
         stModMarkArray = db.studentsModuleMark;
@@ -279,9 +293,10 @@ public class FindStudentTemplate extends JPanel implements MouseListener
         
         this.setLayout(layout);
         this.setBackground(Color.white); 
-        createStTbl();
+        
         createMenuComponents();
         addLvl1Panels();
+        addTbl();
         revalidate();
         
     }
@@ -367,7 +382,7 @@ public class FindStudentTemplate extends JPanel implements MouseListener
         tablegbc.gridx = 0;
 	tablegbc.gridy = 1;
         tablegbc.fill = GridBagConstraints.HORIZONTAL;
-        dataViewLvl1Panel.add(stTable, gbcdataview);     
+        
         
     }
     

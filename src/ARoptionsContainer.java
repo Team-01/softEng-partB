@@ -75,6 +75,12 @@ public class ARoptionsContainer extends JPanel implements MouseListener
     
     private GetFocus getFocus;
     
+    ARo1stAvgDataGrid ar01;
+    ARo2tmAvgDataGrid ar02; 
+    ARo3oaAvgDataGrid ar03;
+    ARo4stComDataGrid ar04;
+    ARo5inResDataGrid ar05;
+    
     public ARoptionsContainer()
     {        
         getFocus = new GetFocus();
@@ -137,11 +143,17 @@ public class ARoptionsContainer extends JPanel implements MouseListener
                 datacontainers[4],
                 arrowBtns[4]);
         
-        datagrids[0] = new ARo1stAvgDataGrid();
-        datagrids[1] = new ARo2tmAvgDataGrid();
-        datagrids[2] = new ARo3oaAvgDataGrid();
-        datagrids[3] = new ARo4stComDataGrid();
-        datagrids[4] = new ARo5inResDataGrid();
+        ar01 = new ARo1stAvgDataGrid();
+        ar02 = new ARo2tmAvgDataGrid(); 
+        ar03 = new ARo3oaAvgDataGrid();
+        ar04 = new ARo4stComDataGrid();
+        ar05 = new ARo5inResDataGrid();
+        
+        datagrids[0] = ar01;
+        datagrids[1] = ar02;
+        datagrids[2] = ar03;
+        datagrids[3] = ar04;
+        datagrids[4] = ar05;
 
         innerGrid.setBackground(Color.white);
         innerGrid.add(Box.createRigidArea(new Dimension(0,5)));
@@ -292,18 +304,11 @@ public class ARoptionsContainer extends JPanel implements MouseListener
         JLabel optionBtn = new JLabel(btnLabel);
         //MotionMouseListener mouseOver = new MotionMouseListener();
         optionBtn.setPreferredSize(new Dimension(570,27));
-       
-        //optionBtn.setEnabled(true);
-        //optionBtn.setFocusPainted(false); //rm txt border
-        //optionBtn.setBorderPainted(false);//rm main border
+
         optionBtn.setOpaque(true);
         optionBtn.setBackground(Color.white);
-        
-        //optionBtn.setContentAreaFilled(false); //rm bg altogether
         optionBtn.setHorizontalAlignment(SwingConstants.LEFT);
-        //optionBtn.setRolloverEnabled(true);
         optionBtn.addMouseListener(this);
-        //optionBtn.addMouseListener(new btnMouseListener());
         optionBtn.setFont(mainStyle.fontM);
         optionBtn.setForeground(mainStyle.systemExtraDarkGrey);
         return optionBtn;
@@ -319,6 +324,7 @@ public class ARoptionsContainer extends JPanel implements MouseListener
 
     }
 
+    
     @Override
     public void mouseReleased(MouseEvent event) {
         Object sourceButton = event.getSource();
@@ -330,7 +336,6 @@ public class ARoptionsContainer extends JPanel implements MouseListener
                 if (lastBtnSelected == btns[compNum] || 
                     lastArrSelected == arrowBtns[compNum])
                 {
-                    //btns[compNum].setSelected(false);
                     arrowBtns[compNum].setSelected(false);
                     datacontainers[compNum].remove(datagrids[compNum]);
                     btns[compNum].setBackground(Color.white);
@@ -339,12 +344,14 @@ public class ARoptionsContainer extends JPanel implements MouseListener
                     lastArrSelected = new JToggleButton();
                 }
                 
-                else //if (btns[compNum].isSelected() == false || 
-                     //    arrowBtns[compNum].isSelected() == false)
+                else
                 {
+                    ar01.buildThis();
+                    ar02.buildThis();
+                    ar03.buildThis();
+                    //ar04.addTbls();
                     datacontainers[compNum].add(datagrids[compNum]);
                     arrowBtns[compNum].setSelected(true);
-                    //btns[compNum].setSelected(false);
                     btns[compNum].setBackground(mainStyle.systemDarkGrey);
                     btns[compNum].setForeground(Color.black);
                     lastBtnSelected = btns[compNum];
@@ -352,7 +359,7 @@ public class ARoptionsContainer extends JPanel implements MouseListener
                 }
             }
             else
-            {
+            {                
                 datacontainers[compNum].remove(datagrids[compNum]);
                 //btns[compNum].setSelected(false);
                 btns[compNum].setBackground(Color.white);

@@ -99,33 +99,34 @@ public class ARo5inResDataGrid extends FindStudentTemplate implements MouseListe
     
     public void createEnterMarksComponents()
     {
+        setKeyActions = new SetKeyActions();
         menuLvl1Layout = new GridBagLayout();
 
-            gbcmenu = new GridBagConstraints();
+        gbcmenu = new GridBagConstraints();
             
-            gbcdataview = new GridBagConstraints();
-            GridBagLayout tableHolderLayout = new GridBagLayout();
-            tableHolder = buildLvl2PanelGrid(tableHolderLayout);
-            tablegbc = new GridBagConstraints();
-            enterModMarkLbl = buildLblMenuLvl1("Enter module mark %");
-            enterYrAvgLbl   = buildLblMenuLvl1("Enter year average %");
+        gbcdataview = new GridBagConstraints();
+        GridBagLayout tableHolderLayout = new GridBagLayout();
+        tableHolder = buildLvl2PanelGrid(tableHolderLayout);
+        tablegbc = new GridBagConstraints();
+        enterModMarkLbl = buildLblMenuLvl1("Enter module mark %");
+        enterYrAvgLbl   = buildLblMenuLvl1("Enter year average %");
             
-            enterYrAvgTxt = buildTxtPercentMenu(4);
-            enterModMarkTxt = buildTxtPercentMenu(4);
+        enterYrAvgTxt = buildTxtPercentMenu(4);
+        enterModMarkTxt = buildTxtPercentMenu(4);
             
-            enterModMarkLblPanel = buildPanelLblMenuLvl1(enterModMarkLbl);
-            enterModMarkTxtPanel = buildPanelTxtMenuLvl1(enterModMarkTxt);
-            enterMarksPanel = buildPanelCompMenuLvl1();
+        enterModMarkLblPanel = buildPanelLblMenuLvl1(enterModMarkLbl);
+        enterModMarkTxtPanel = buildPanelTxtMenuLvl1(enterModMarkTxt);
+        enterMarksPanel = buildPanelCompMenuLvl1();
             
-            enterYrAvgLblPanel = buildPanelLblMenuLvl1(enterYrAvgLbl);
-            enterYrAvgTxtPanel = buildPanelTxtMenuLvl1(enterYrAvgTxt);
-            enterYrAvgPanel = buildPanelCompMenuLvl1();
+        enterYrAvgLblPanel = buildPanelLblMenuLvl1(enterYrAvgLbl);
+        enterYrAvgTxtPanel = buildPanelTxtMenuLvl1(enterYrAvgTxt);
+        enterYrAvgPanel = buildPanelCompMenuLvl1();
             
-            btnEnterMarks = buildAbtn("Update marks");
+        btnEnterMarks = buildAbtn("Update marks");
             
-            btnNextStPnl = buildAbtn("Select next student");
+        btnNextStPnl = buildAbtn("Select next student");
             
-            btnEnterMarksPnl = buildPanelCompMenuLvl1();
+        btnEnterMarksPnl = buildPanelCompMenuLvl1();
         }
     
     public JTextField buildTxtPercentMenu(int colWidth)
@@ -133,6 +134,7 @@ public class ARo5inResDataGrid extends FindStudentTemplate implements MouseListe
         JTextField txtEnterPercent = buildTxtMenu(colWidth);   
         getPercentValid = new GetPercentageValid();
         txtEnterPercent.setInputVerifier(getPercentValid);
+        txtEnterPercent.addKeyListener(setKeyActions);
         return txtEnterPercent;
     }
     
@@ -221,11 +223,14 @@ public class ARo5inResDataGrid extends FindStudentTemplate implements MouseListe
     
     public void setEnterMarksData(int stIDindex)
     {
+        int arrayPointer = getRowSelected();
+            
         if (!enterModMarkTxt.getText().equals(""))
         {
             db.modify("UPDATE students SET moduleMark = '"
                     +enterModMarkTxt.getText()+"' WHERE ID = '"+db.studentsID.get(getRowSelected())+"'");
             setSelectedCellTxt(enterModMarkTxt.getText() + "%", 2);
+            db.studentsModuleMark.set(arrayPointer,enterModMarkTxt.getText());
         }
         
         if (!enterYrAvgTxt.getText().equals(""))
@@ -234,6 +239,8 @@ public class ARo5inResDataGrid extends FindStudentTemplate implements MouseListe
                     +enterYrAvgTxt.getText()+"' WHERE ID = '"+db.studentsID.get(getRowSelected())+"'");
             setSelectedCellTxt(enterYrAvgTxt.getText() + "%", 3);
             revalidate();
+            db.studentsAverageMark.set(arrayPointer,enterYrAvgTxt.getText());
+            
         }
         /**
          * TODO: update marks in database (SQL)
@@ -299,6 +306,44 @@ public class ARo5inResDataGrid extends FindStudentTemplate implements MouseListe
     public void mouseExited(MouseEvent e) {
       
     }
+    
+    private class SetKeyActions implements KeyListener
+    {
+
+        @Override
+        public void keyTyped(KeyEvent e){}
+        @Override
+        public void keyPressed(KeyEvent e) {
+            
+            if(e.getKeyCode() == KeyEvent.VK_ENTER)
+            {
+                if (e.getSource() == btnEnterMarks)
+                {
+                    actionEnterMarks();
+                    btnNextStPnl.requestFocus();
+                }  
+                else if (e.getSource() == btnNextStPnl)
+                {
+                    actionSelectNextSt();
+                    enterModMarkTxt.requestFocus();
+                }  
+                else if (e.getSource() == enterModMarkTxt)
+                {
+                    enterYrAvgTxt.requestFocus();
+                }
+                else if (e.getSource() == enterYrAvgTxt)
+                {
+                    btnEnterMarks.requestFocus();
+                }  
+            }
+            
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+        }
+    }
+
     
     private class GetPercentageValid extends InputVerifier {
         @Override
@@ -405,27 +450,6 @@ public class ARo5inResDataGrid extends FindStudentTemplate implements MouseListe
             }
         }
     }
-    private class SetKeyActions implements KeyListener
-    {
-
-        @Override
-        public void keyTyped(KeyEvent e){}
-        @Override
-        public void keyPressed(KeyEvent e) {
-            
-            if(e.getKeyCode() == KeyEvent.VK_ENTER)
-            {
-                if (e.getSource() == btnEnterMarks)
-                {
-                    actionEnterMarks();
-                }  
-            }
-        }
-
-        @Override
-        public void keyReleased(KeyEvent e) {}
-    }
-    
 
     
     public static void main(String[] args) {

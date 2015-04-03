@@ -27,7 +27,7 @@ public class ARo3oaAvgDataGrid extends JPanel
     GridBagLayout layout;
     GridBagConstraints gbc;
     JPanel tbl;
-    SQLite db = new SQLite();
+    SQLite db;
     Style mainStyle = new Style();
     
     Double yrAverage;
@@ -42,11 +42,18 @@ public class ARo3oaAvgDataGrid extends JPanel
     
     public ARo3oaAvgDataGrid()
     {
-        buildThis();
+
     }
     
     public void buildThis()
     {
+        db = new SQLite();
+        if(modAvgLbl!= null)
+        {
+            this.remove(modAvgLbl);
+            this.remove(yrAvgLbl);
+            this.remove(avgDiffLbl);
+        }
         this.setBackground(Color.white);
         layout = new GridBagLayout();
         gbc = new GridBagConstraints();
@@ -72,7 +79,7 @@ public class ARo3oaAvgDataGrid extends JPanel
                 + "The overall <b>year average</b> for the class is <b>"
                 + yrAverage + "%</b>.</html>");
         avgDiffLbl = buildLbl("<html>"
-                + "In comparison the module average was <b>"
+                + "In comparison the module average is <b>"
                 + avgDifference + "% " + indicator + "</b>.</html>"); 
         
         gbc.gridy = 1;

@@ -34,7 +34,7 @@ public class ARo4stComDataGrid extends FindStudentTemplate implements MouseListe
     private JLabel tbl1header;
     private JLabel tbl2header;
            
-    private SQLite db = new SQLite();
+    private SQLite db;
     private ArrayList<ArrayList> tmVsStuTblArray;
     private ArrayList<ArrayList> stVsStAvgTblArray;
     private String tmSelected;
@@ -53,8 +53,6 @@ public class ARo4stComDataGrid extends FindStudentTemplate implements MouseListe
     private FindStudentTemplate blank = new FindStudentTemplate();
     public ARo4stComDataGrid() 
     {
-        //findStudent = new FindStudentTemplate();
-        //this.add(findStudent);
         enterEmailBtnPanel.addMouseListener(this);
         tbl1header = buildLbl(getRowEleStr(0) + " vs their team");
         tbl2header = buildLbl(getRowEleStr(0) + " vs student average");
@@ -62,6 +60,7 @@ public class ARo4stComDataGrid extends FindStudentTemplate implements MouseListe
     
     public void addArrayData()
     {
+        db = new SQLite();
         //Fill column headings
         headArray.add("");
         headArray.add(getRowEleStr(0));
@@ -115,7 +114,6 @@ public class ARo4stComDataGrid extends FindStudentTemplate implements MouseListe
         markColArray = new ArrayList();
         stMarksArray = new ArrayList();
         stAvgMarksArray = new ArrayList();
-        
         stVsStAvgTblArray = new ArrayList();
         addArrayData();
         

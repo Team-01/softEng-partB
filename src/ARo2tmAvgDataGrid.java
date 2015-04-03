@@ -28,7 +28,7 @@ public class ARo2tmAvgDataGrid extends ARcommonMethods
     GridBagConstraints gbc;
     JPanel tbl;
     private ArrayList<ArrayList> columnArray;
-    SQLite db = new SQLite();
+    SQLite db;
     ArrayList <String> teamColumn;
     ArrayList <String> yrAvgColumn;
     ArrayList <String> modAvgColumn;
@@ -36,11 +36,16 @@ public class ARo2tmAvgDataGrid extends ARcommonMethods
     
     public ARo2tmAvgDataGrid()
     {
-        buildThis();
+
     }
     
     public void buildThis()
     {
+        if (tbl!=null)
+        {
+            this.remove(tbl);
+        }
+        db = new SQLite();
         this.setBackground(Color.white);
         layout = new GridBagLayout();
         columnArray = new ArrayList();
