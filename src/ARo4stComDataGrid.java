@@ -74,21 +74,22 @@ public class ARo4stComDataGrid extends FindStudentTemplate implements MouseListe
             {
                 stTeam = db.studentsMemberOfTeam.get(getTxtStuRowIndex());
             }
-            headArray.add(stTeam);
+            headArray.add("Team " + stTeam);
 
             //Fill array for first column to indicate mark types
             markColArray.add("Year average");
-            markColArray.add("Software Eng");
+            markColArray.add("Software eng");
 
             //Fill array for 2nd column with students yr avg and module mark
             stMarksArray.add(db.studentsAverageMark.get(getTxtStuRowIndex()));
             stMarksArray.add(db.studentsModuleMark.get(getTxtStuRowIndex()));
 
             //create data and fill final column for tm vs student with tm yr avg and module mark
-            tmModMark = stTeamAvg(db.studentsMemberOfTeam, db.studentsModuleMark);
             tmYrAvgMark = stTeamAvg(db.studentsMemberOfTeam, db.studentsAverageMark);
-            tmMarksArray.add(Double.toString(tmModMark));
+            tmModMark = stTeamAvg(db.studentsMemberOfTeam, db.studentsModuleMark);
+            
             tmMarksArray.add(Double.toString(tmYrAvgMark));
+            tmMarksArray.add(Double.toString(tmModMark));
 
             //fill array for first tbl team vs student
             tmVsStuTblArray.add(markColArray);
