@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.regex.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -13,13 +14,17 @@ public class CreateTeams {
     private JComboBox comboNumTeams = new JComboBox();
     private String strCheckGroupPartTime = "checkGroupPartTime";
     private JCheckBox checkGroupPartTime = new JCheckBox("Group part time");
+    private String strAssign = "Assign";
+    private String strUnassign = "Unassign";
     
     private JPanel panelLists = new JPanel(new GridBagLayout());
     private JPanel panelButtons = new JPanel(new GridBagLayout());
     
     public ArrayList<Student> Students;
+    private ArrayList<JList> teamLists = new ArrayList();
+    private JList unassignedList;
     public int numTeams;
-    private boolean fakeStudents = true;
+    private boolean fakeStudents = false;
     private SQLite dbToUseWhenEventFired;
     private boolean groupPartTime = false;
         
@@ -36,8 +41,12 @@ public class CreateTeams {
         p.setBackground(Color.white);
         p.setBorder(mainStyle.border20);
 
-        // Add content below...
-        String[] strNumTeams = {"1", "2", "3", "4", "5", "6"};
+        ArrayList<String> strNumTeams = new ArrayList();
+        for (int i = 1; i <= Students.size() / 2 || i <= 2; i++)
+        {
+            strNumTeams.add(String.valueOf(i));
+        }
+
         for (String opt : strNumTeams)
         {
             comboNumTeams.addItem(opt);
@@ -85,7 +94,7 @@ public class CreateTeams {
         //set a starting value for the number of teams, this 
         //also fires the event and populates the right number
         //of lists
-        comboNumTeams.setSelectedIndex(3);
+        comboNumTeams.setSelectedIndex(1);
         
     }
     
@@ -176,6 +185,11 @@ public class CreateTeams {
     
     private void assignTeams(int numTeams)
     {
+        GroupStudents group = new GroupStudents();
+        //group by test score and team role to mix the experience and
+        //person type up amongst the teams
+        group.group(Students, group.BY_TEST_SCORE + group.BY_TEAM_ROLE);
+        
         int i = 0;
         for (Student s : Students)
         {
@@ -202,7 +216,7 @@ public class CreateTeams {
                     
                     boolean swapped = false;
                     i = 0;
-                    while (! swapped)
+                    while (! swapped && i < Students.size())
                     {
                         if (Students.get(i).fullTime == true &&
                                 Students.get(i).memberOfTeam == 0)
@@ -220,28 +234,34 @@ public class CreateTeams {
         }
         dbToUseWhenEventFired.refresh();
     }
+    
     private String studentDisplayString(Student s)
     {
         String ft;
         if (s.fullTime) ft = "FT";
         else ft = "PT";
-        String displayString = s.name + " " + " (" +
+        String displayString = s.name + " " + " (ID: " + s.ID + ", " +
                 ft + ", Test Score: " + s.testScore + ", Team Role: " +
                 s.teamRole + ")";
         return displayString;
     }
     
+    private String idFromStudentDisplayString(String displayString)
+    {
+        String strPattern = "ID: (\\d*)";
+        Pattern searchPattern = Pattern.compile(strPattern);
+        Matcher m = searchPattern.matcher(displayString);
+        String ID = "";
+        if (m.find()) ID = m.group(1).replaceAll("\\s+", "");
+        else System.out.println("Error, could determine student ID from display string");
+        return ID;
+    }
+        
     private void refreshTeamLists()
     {
         
         panelLists.removeAll();
-
-        GroupStudents group = new GroupStudents();
-        //group by test score and team role to mix the experience and
-        //person type up amongst the teams
-        group.group(Students, group.BY_TEST_SCORE + group.BY_TEAM_ROLE);
-        assignTeams(numTeams);
-
+        teamLists.clear();
         for (int i = 0; i < numTeams; i++)
         {
             GridBagConstraints gbc = new GridBagConstraints();
@@ -264,13 +284,51 @@ public class CreateTeams {
 
             }
             JList list = new JList(listModel);
+            teamLists.add(list);
             panelLists.add(teamLabel, gbc);
             panelLists.add(list, gbc);
+            
+            listenerButtons lButtons = new listenerButtons();
+            
+            
+            JButton btnAssign = new JButton(strAssign);
+            btnAssign.setActionCommand(strAssign + i);
+            btnAssign.addActionListener(lButtons);
+            
+            JButton btnUnassign = new JButton(strUnassign);
+            btnUnassign.setActionCommand(strUnassign + i);
+            btnUnassign.addActionListener(lButtons);
+            
+            panelLists.add(btnAssign, gbc);
+            panelLists.add(btnUnassign, gbc);
+            
+            if (i == numTeams - 1)
+            {
+                gbc.gridy = gbc.gridy + 1;
+                
+                JLabel unassignedLabel = new JLabel("Unassigned");
+                unassignedLabel.setForeground(mainStyle.systemColor);
+                unassignedLabel.setFont(mainStyle.fontM);
+                panelLists.add(unassignedLabel, gbc);
+                
+                DefaultListModel dlm = new DefaultListModel();
+                for (Student s : Students)
+                {
+                    if (s.memberOfTeam == -1)
+                    {
+                        String str = studentDisplayString(s);
+                        dlm.addElement(str);
+                    }
+                }
+                unassignedList = new JList(dlm);
+                panelLists.add(unassignedList, gbc); 
+            }
         }
-
         sp.validate();
         sp.repaint();
     }
+    
+    
     private class listenerButtons implements ActionListener
     {
         public void actionPerformed(ActionEvent e)
@@ -280,23 +338,63 @@ public class CreateTeams {
             {
                 JComboBox comboBox = (JComboBox)e.getSource();
                 numTeams = Integer.parseInt(comboBox.getSelectedItem().toString());
-                refreshTeamLists();
+                assignTeams(numTeams);
             }
             else if (cmd.compareTo(strCheckGroupPartTime) == 0)
             {
                 JCheckBox checkBox = (JCheckBox)e.getSource();
                 if (checkBox.isSelected()) groupPartTime = true;
                 else groupPartTime = false;
-                refreshTeamLists();
+                assignTeams(numTeams);
             }
+            else if (cmd.contains(strUnassign))
+            {
+                int buttonIndex = Integer.parseInt(cmd.replaceAll(strUnassign, ""));
+                JList list = teamLists.get(buttonIndex);
+                int[] selectedIndices = list.getSelectedIndices();
+                
+                for (int i : selectedIndices)
+                {
+                    String displayString = list.getModel().getElementAt(i).toString();
+                    String ID = idFromStudentDisplayString(displayString);
+                    
+                    for (Student s : Students)
+                    {
+                        if (s.ID.compareTo(ID) == 0)
+                        {
+                            s.memberOfTeam = -1;
+                            if (! fakeStudents)
+                                dbToUseWhenEventFired.modify("update students set memberOfTeam='"
+                                + s.memberOfTeam + "' where ID='" + s.ID + "'" );
+                        }
+                    }
+                }
+            }
+            else if (cmd.contains(strAssign))
+            {
+                int newTeam = Integer.parseInt(cmd.replaceAll(strAssign, ""));
+                JList list = unassignedList;
+                
+                int[] selectedIndices = list.getSelectedIndices();
+                
+                for (int i : selectedIndices)
+                {
+                    String displayString = list.getModel().getElementAt(i).toString();
+                    String ID = idFromStudentDisplayString(displayString);
+                    for (Student s : Students)
+                    {
+                        if (s.ID.compareTo(ID) == 0)
+                        {
+                            s.memberOfTeam = newTeam;
+                            if (! fakeStudents)
+                                dbToUseWhenEventFired.modify("update students set memberOfTeam='"
+                                + s.memberOfTeam + "' where ID='" + s.ID + "'" );
+                        }
+                    }
+                }
+            }
+            refreshTeamLists();
         }
     }
     
-    private class listenerLists implements ActionListener
-    {
-        public void actionPerformed(ActionEvent e)
-        {
-            System.out.println(e.getActionCommand());
-        }
-    }
 }
