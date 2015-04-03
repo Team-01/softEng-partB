@@ -47,7 +47,7 @@ public class ARo4stComDataGrid extends FindStudentTemplate implements MouseListe
     private ArrayList<String> tmMarksArray;
     private FindStudentTemplate findStudent;
     private ARcommonMethods extendedMethods = new ARcommonMethods();
-    private TableTemplate tbl;
+    private TableTemplate tbl1;
     private TableTemplate tbl2;
     private String stTeam;
     private FindStudentTemplate blank = new FindStudentTemplate();
@@ -131,19 +131,19 @@ public class ARo4stComDataGrid extends FindStudentTemplate implements MouseListe
             gbc.fill = GridBagConstraints.HORIZONTAL;
             gbc.gridx = 0;
             gbc.gridy = 3;
-            if (tbl != null && tbl2 !=null)
+            if (tbl1 != null && tbl2 !=null)
             {
-                this.menuLvl1Panel.remove(tbl);
+                this.menuLvl1Panel.remove(tbl1);
                 this.menuLvl1Panel.remove(tbl2);
                 this.menuLvl1Panel.revalidate();
                 this.menuLvl1Panel.repaint();
             }
                   
-            tbl = new TableTemplate(headArray, tmVsStuTblArray,false,blank, 2, 1);
+            tbl1 = new TableTemplate(headArray, tmVsStuTblArray,false,blank, 2, 1);
             
             this.menuLvl1Panel.add(tbl1header,gbc);
             gbc.gridy = 4;
-            this.menuLvl1Panel.add(tbl, gbc);
+            this.menuLvl1Panel.add(tbl1, gbc);
             
             
             headArray = new ArrayList();
@@ -185,6 +185,7 @@ public class ARo4stComDataGrid extends FindStudentTemplate implements MouseListe
     {
         double avg = 0;
         double tmCount = 0;
+        tmSelected = db.studentsMemberOfTeam.get(getTxtStuRowIndex());
         for (int i = 0; i<stTeams.size(); i++)
         {
             try
