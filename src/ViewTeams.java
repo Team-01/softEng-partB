@@ -18,7 +18,7 @@ public class ViewTeams extends JFrame
     Style mainStyle = new Style();                                              // Create an instance of the Style class for accessing system styles
     SQLite db = new SQLite();                                                   // Create an instance of SQLite class for working on database
     
-    JPanel tableP;
+    JPanel tablePanel;
     
     int teamNum = (db.studentsMemberOfTeam.size()-2);                                                         //Team Number variable
     int counter = 0;//Counter for Number of teams
@@ -50,8 +50,8 @@ public class ViewTeams extends JFrame
         {
             currentStudentTeam = String.valueOf(i);
 
-            // Panel for entire table
-            tableP = new JPanel(new GridLayout(0,1));
+            // Panel for Table layout
+            tablePanel = new JPanel(new GridLayout(0,1));
 
             //Panel for Team Number Names
             JPanel teamHeader = new JPanel();
@@ -64,43 +64,43 @@ public class ViewTeams extends JFrame
             teamLabel.setFont(mainStyle.fontL);
 
             // Panel for the header row and all JLabels
-            JPanel headerP = new JPanel(new GridLayout(0,3));
-            headerP.setBorder(mainStyle.borderCustom(5, 5, 5, 5));
-            headerP.setBackground(mainStyle.systemLightGrey);
-            headerP.setForeground(mainStyle.systemColor);
-            tableP.add(headerP);
+            JPanel headerPanel = new JPanel(new GridLayout(0,3));
+            headerPanel.setBorder(mainStyle.borderCustom(5, 5, 5, 5));
+            headerPanel.setBackground(mainStyle.systemLightGrey);
+            headerPanel.setForeground(mainStyle.systemColor);
+            tablePanel.add(headerPanel);
 
-            ArrayList<JLabel> headers = new ArrayList<JLabel>();
+            ArrayList<JLabel> headerArray = new ArrayList<JLabel>();
 
-            JLabel headerL1 = new JLabel("Student Name");
-            JLabel headerL2 = new JLabel("Student ID");
-            JLabel headerL3 = new JLabel("Student Email");
+            JLabel header1 = new JLabel("Student Name");
+            JLabel header2 = new JLabel("Student ID");
+            JLabel header3 = new JLabel("Student Email");
 
-            headers.add(headerL1);
-            headers.add(headerL2);
-            headers.add(headerL3);
+            headerArray.add(header1);
+            headerArray.add(header2);
+            headerArray.add(header3);
         
-            for (JLabel header:headers)
+            for (JLabel header:headerArray)
             {
                 header.setForeground(mainStyle.systemColor);
                 header.setFont(mainStyle.fontS);
-                headerP.add(header);
+                headerPanel.add(header);
             }
                     //Creation of Button
             //JButton buttonName = new JButton("Team "+counter+"");
             //box.add(buttonName);
             box.add(Box.createVerticalStrut (5));
-            box.add(tableP);
+            box.add(tablePanel);
             box.add(Box.createVerticalStrut (20));
             
             for (int count = 0; count < se.db.studentsID.size(); count++)
             {
                 if (se.db.studentsMemberOfTeam.get(count).equals(currentStudentTeam))
                 {
-                    JPanel studentP = new JPanel(new GridLayout(0,3));
-                    studentP.setBackground(Color.white);
-                    studentP.setBorder(mainStyle.borderCustom(2, 2, 2, 2));
-                    tableP.add(studentP);
+                    JPanel studentPanel = new JPanel(new GridLayout(0,3));
+                    studentPanel.setBackground(Color.white);
+                    studentPanel.setBorder(mainStyle.borderCustom(2, 2, 2, 2));
+                    tablePanel.add(studentPanel);
 
                     String currentID = se.db.studentsStuID.get(count);
                     JTextField StuID = new JTextField(currentID);
@@ -111,9 +111,9 @@ public class ViewTeams extends JFrame
                     StuEmail.setEditable(false);
                     
                     // Add all components to panel
-                    studentP.add(StuName);
-                    studentP.add(StuID);
-                    studentP.add(StuEmail);
+                    studentPanel.add(StuName);
+                    studentPanel.add(StuID);
+                    studentPanel.add(StuEmail);
                 }
             }
             counter ++;
