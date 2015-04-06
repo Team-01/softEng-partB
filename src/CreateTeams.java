@@ -107,10 +107,15 @@ public class CreateTeams {
         {
             Student s = new Student();
             s.ID = db.studentsID.get(i);
-            s.averageMark = Integer.parseInt(db.studentsAverageMark.get(i));
+            
+            if (db.studentsAverageMark.get(i) != null)
+                s.averageMark = Integer.parseInt(db.studentsAverageMark.get(i));
+            else s.averageMark = -1;
+            
             s.name = db.studentsStuName.get(i);
             
-            if (db.studentsStuStudyType.get(i).compareTo("FT") == 0) s.fullTime = true;
+            if (db.studentsStuStudyType.get(i).compareTo("FT") == 0) 
+                s.fullTime = true;
             else s.fullTime = false;
             
             if (db.studentsMemberOfTeam.get(i) != null) 
