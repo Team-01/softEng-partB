@@ -46,7 +46,11 @@ public class ARcommonMethods extends JPanel
                 for (int student = 0; student<stMarkArray.size(); student++)
                 {
                     String stTeam = stTmArray.get(student);
-                    int stMark = Integer.parseInt(stMarkArray.get(student));
+                    double stMark = 0;
+                    if (stMarkArray.get(student) != null)
+                    {
+                        stMark = Double.parseDouble(stMarkArray.get(student));
+                    }
                     System.out.println("/"+team);
                     if (stTeam.equals(team))
                     {

@@ -100,8 +100,17 @@ public class TableTemplate extends JPanel implements MouseListener
             neutralLbl = new JLabel(neutral);
             ArrayList<String>columnLookArray = stDataArrays.get(columnIlook);
             ArrayList<String>columnTestArray = stDataArrays.get(columnItest);
-            double lookData = Double.parseDouble(columnLookArray.get(row));
-            double testData = Double.parseDouble(columnTestArray.get(row));
+            double lookData = 0;
+            double testData = 0;
+            if (columnLookArray.get(row) != null)
+            {
+                lookData = Double.parseDouble(columnLookArray.get(row));
+            }
+            if (columnTestArray.get(row) != null)
+            {
+                testData = Double.parseDouble(columnTestArray.get(row));
+            }
+            
             if (lookData > testData)
             {
                 JPanel rArrowPnl = buildTblLblPanel(rArrowLbl, selectable, ml);
@@ -155,19 +164,18 @@ public class TableTemplate extends JPanel implements MouseListener
             
             for(int i2 = 0; i2 < nextArray.size(); i2++)
             {
-                gbc.gridy = 0;
-                String cellStr = nextArray.get(i2).toString();
-                JLabel cellLbl = new JLabel(cellStr);
-                JPanel cellPnl = buildTblLblPanel(cellLbl, selectable,ml);
-                
+                JLabel cellLbl = new JLabel();
+                gbc.gridy = 0;                
                 if (nextArray.get(i2) != null)
                 {
+                    String cellStr = nextArray.get(i2).toString();
                     cellLbl.setText(cellStr);
                 }
                 else
                 {
                     cellLbl.setText("no data");
                 }
+                JPanel cellPnl = buildTblLblPanel(cellLbl, selectable,ml);
                 lblcolumn.add(cellLbl);
                 column.add(cellPnl);
             }

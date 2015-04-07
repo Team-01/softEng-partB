@@ -423,7 +423,6 @@ public class ARoptionsContainer extends JPanel implements MouseListener
                 if (e.getSource() == arrowBtns[compNum])
                 {
                     options[compNum].setBorder(mainStyle.borderFocused);
-                    System.out.println("b");
                 }
             }
         }

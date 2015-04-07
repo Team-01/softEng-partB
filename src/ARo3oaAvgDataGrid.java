@@ -105,7 +105,11 @@ public class ARo3oaAvgDataGrid extends JPanel
         double total = 0;
         for (int i=0; i<arrayIn.size(); i++)
         {
-            double number = Double.parseDouble(arrayIn.get(i));
+            double number = 0;
+            if (arrayIn.get(i) != null)
+            {
+            number = Double.parseDouble(arrayIn.get(i));
+            }
             total+=number;
         }
         double average = total/arrayIn.size();
