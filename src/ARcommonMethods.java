@@ -45,7 +45,11 @@ public class ARcommonMethods extends JPanel
                 int teamMark = 0;
                 for (int student = 0; student<stMarkArray.size(); student++)
                 {
-                    String stTeam = stTmArray.get(student);
+                    String stTeam = "No data";
+                    if (stTmArray.get(student) != null)
+                    {
+                        stTeam = stTmArray.get(student);
+                    }
                     double stMark = 0;
                     if (stMarkArray.get(student) != null)
                     {
