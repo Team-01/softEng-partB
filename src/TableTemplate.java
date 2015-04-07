@@ -3,6 +3,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -152,6 +154,9 @@ public class TableTemplate extends JPanel implements MouseListener
         gbc.gridx = 0;
 	gbc.gridy = 0;
         gbc.fill = GridBagConstraints.BOTH;
+        
+        NumberFormat nf = new DecimalFormat("##.##");
+        
         for (int i = 0; i < stDataArrays.size(); i++)
         {
             ArrayList<JPanel> column = new ArrayList();
@@ -165,10 +170,24 @@ public class TableTemplate extends JPanel implements MouseListener
             for(int i2 = 0; i2 < nextArray.size(); i2++)
             {
                 JLabel cellLbl = new JLabel();
-                gbc.gridy = 0;                
+                gbc.gridy = 0;      
+                String cellStr = "no data";
                 if (nextArray.get(i2) != null)
                 {
-                    String cellStr = nextArray.get(i2).toString();
+                    try 
+                    {
+                        double cellDbl;
+                        cellDbl = Double.parseDouble(nextArray.get(i2).toString());
+                        cellStr = nf.format(cellDbl);
+                        if (i!=0)
+                        {
+                            cellStr = nf.format(cellDbl)+"%";
+                        }
+                    }
+                    catch(NumberFormatException nfe)
+                    {
+                        cellStr = nextArray.get(i2).toString();
+                    }
                     cellLbl.setText(cellStr);
                 }
                 else
@@ -321,10 +340,6 @@ public class TableTemplate extends JPanel implements MouseListener
     @Override
     public void mouseExited(MouseEvent e) {
         actionRowEvent(e.getSource(),"exit");
-    }
-    
-    public void setTblRowBackground(int column, int row, Color colour)
-    {
     }
     
     public int getSelectedRow()

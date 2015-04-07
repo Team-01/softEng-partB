@@ -82,7 +82,7 @@ public class GroupStudents
                         break;
                     
                     case BY_AVERAGE_MARK:
-                        groupOrder = (groupOrder + 1) + ((s.averageMark + 1)*importance);
+                        groupOrder = (groupOrder + 1) + (((int)s.averageMark + 1)*importance);
                         break;
                         
                 }         

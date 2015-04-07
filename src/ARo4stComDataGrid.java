@@ -177,7 +177,10 @@ public class ARo4stComDataGrid extends FindStudentTemplate implements MouseListe
         double stmarks = 0;
         for (int i = 0; i<arraymarks.size(); i++)
         {
+            if (arraymarks.get(i) != null)
+            {
             stmarks += Double.parseDouble(arraymarks.get(i));
+            }
         }
         return stmarks/arraymarks.size();
     }
@@ -199,7 +202,7 @@ public class ARo4stComDataGrid extends FindStudentTemplate implements MouseListe
             }
             catch(NullPointerException npe)
             {
-                return 0;
+                avg+= 0;
             }
             
         }

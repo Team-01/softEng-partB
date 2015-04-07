@@ -12,6 +12,8 @@ import java.awt.GridBagConstraints;
 import static java.awt.GridBagConstraints.NORTH;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
@@ -47,6 +49,8 @@ public class ARo3oaAvgDataGrid extends JPanel
     
     public void buildThis()
     {
+        NumberFormat nf = new DecimalFormat("##.##");
+        
         db = new SQLite();
         if(modAvgLbl!= null)
         {
@@ -74,13 +78,13 @@ public class ARo3oaAvgDataGrid extends JPanel
         
         modAvgLbl = buildLbl("<html>"
                 + "The overall <b>module average</b> for the class is <b>" 
-                + modMarkAvg + "%</b>.</html>");
+                + nf.format(modMarkAvg) + "%</b>.</html>");
         yrAvgLbl = buildLbl("<html>" 
                 + "The overall <b>year average</b> for the class is <b>"
-                + yrAverage + "%</b>.</html>");
+                + nf.format(yrAverage) + "%</b>.</html>");
         avgDiffLbl = buildLbl("<html>"
                 + "In comparison the module average is <b>"
-                + avgDifference + "% " + indicator + "</b>.</html>"); 
+                + nf.format(avgDifference) + "% " + indicator + "</b>.</html>"); 
         
         gbc.gridy = 1;
         gbc.insets = new Insets(10,50,20,10);

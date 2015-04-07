@@ -26,8 +26,8 @@ public class Student extends User
     int trSP;
     String teamRole;
     int testScore;
-    int moduleMark;
-    int averageMark;    
+    double moduleMark;
+    double averageMark;    
     
     public Student()
     {

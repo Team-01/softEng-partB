@@ -352,8 +352,8 @@ public class ARo5inResDataGrid extends FindStudentTemplate implements MouseListe
             String textInput = ((JTextField) input).getText();
             try 
             {
-                int intInput = Integer.parseInt(textInput); 
-                if (intInput < 0 || intInput > 100)
+                double doubleInput = Double.parseDouble(textInput); 
+                if (doubleInput < 0 || doubleInput > 100)
                 {
                     input.setBorder(mainStyle.redBorder);
                      mainStyle.createPopUpFrame(

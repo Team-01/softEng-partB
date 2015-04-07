@@ -42,7 +42,8 @@ public class ARcommonMethods extends JPanel
             for (int i = 0; i<tmArray.size(); i ++)
             {
                 String team = tmArray.get(i);
-                int teamMark = 0;
+                double teamMark = 0;
+                int teamMembers = 0;
                 for (int student = 0; student<stMarkArray.size(); student++)
                 {
                     String stTeam = "No data";
@@ -58,11 +59,12 @@ public class ARcommonMethods extends JPanel
                     System.out.println("/"+team);
                     if (stTeam.equals(team))
                     {
+                        teamMembers++;
                         teamMark += stMark;
                     }
                 }
-            teamMark /= tmArray.size();
-            arrayOut.add(Integer.toString(teamMark));
+            teamMark /= teamMembers;
+            arrayOut.add(Double.toString(teamMark));
             }
         }
         return arrayOut;

@@ -109,7 +109,7 @@ public class CreateTeams {
             s.ID = db.studentsID.get(i);
             
             if (db.studentsAverageMark.get(i) != null)
-                s.averageMark = Integer.parseInt(db.studentsAverageMark.get(i));
+                s.averageMark = Double.parseDouble(db.studentsAverageMark.get(i));
             else s.averageMark = -1;
             
             s.name = db.studentsStuName.get(i);
@@ -123,7 +123,7 @@ public class CreateTeams {
             else s.memberOfTeam = -1;
             
             if (db.studentsModuleMark.get(i) != null)
-                s.moduleMark = Integer.parseInt(db.studentsModuleMark.get(i));
+                s.moduleMark = Double.parseDouble(db.studentsModuleMark.get(i));
             else s.moduleMark = -1;
             
             if (db.studentsTestScore.get(i) != null)
