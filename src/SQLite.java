@@ -232,4 +232,26 @@ public class SQLite
         selectEnd(results);
     }
     
+    public int numberOfTeams()
+    {
+        int count = 0;
+        
+        ResultSet results = selectStart("SELECT DISTINCT memberOfTeam FROM students;");
+        
+        try
+        {
+            while (results.next())
+            {
+                count++;
+            }
+        }
+        catch (SQLException ex)
+        {
+            System.out.println("Error with numberOfTeams method");
+        }
+                
+        selectEnd(results);
+        return count; 
+    }
+    
 }
