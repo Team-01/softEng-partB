@@ -10,6 +10,8 @@ public class CreateTeams {
     JScrollPane sp; 
     Style mainStyle = new Style();
     
+    private String strRefreshButton = "Refresh";
+    private JButton buttonRefresh = new JButton(strRefreshButton);
     private String strComboNumTeams = "comboNumTeams";
     private JComboBox comboNumTeams = new JComboBox();
     private String strCheckGroupPartTime = "checkGroupPartTime";
@@ -34,7 +36,11 @@ public class CreateTeams {
         dbToUseWhenEventFired = se.db;
         Random rand = new Random();
         if (fakeStudents) Students = getFakeStudents(rand.nextInt(16)+10);
-        else Students = getStudentsFromDB(se.db);
+        else 
+        {
+            se.db.refresh();
+            Students = getStudentsFromDB(se.db);
+        }
 
         // Make main class panel and make it a scrollpane
         JPanel p = new JPanel(new GridBagLayout());
@@ -53,13 +59,18 @@ public class CreateTeams {
         }
         
         listenerButtons lButtons = new listenerButtons();
-        comboNumTeams.setActionCommand(strComboNumTeams);
-        comboNumTeams.addActionListener(lButtons);
         
         GridBagConstraints gbcButtons = new GridBagConstraints();
         gbcButtons.anchor = GridBagConstraints.EAST;
         gbcButtons.gridy = 0;
         gbcButtons.insets = new Insets(10, 0, 0, 0);
+        
+        buttonRefresh.addActionListener(lButtons);
+        panelButtons.add(buttonRefresh, gbcButtons);
+        
+        gbcButtons.gridy = gbcButtons.gridy + 1;
+        comboNumTeams.setActionCommand(strComboNumTeams);
+        comboNumTeams.addActionListener(lButtons);
         panelButtons.add(comboNumTeams, gbcButtons);
         
         checkGroupPartTime.setHorizontalTextPosition(SwingConstants.LEFT);
@@ -91,11 +102,20 @@ public class CreateTeams {
         sp.setBorder(mainStyle.borderScroll);
         mainStyle.smoothScroll(sp);
         
-        //set a starting value for the number of teams, this 
-        //also fires the event and populates the right number
-        //of lists
-        comboNumTeams.setSelectedIndex(1);
-        
+        //find the starting value for the number of teams, and 
+        //create the right amount of lists
+        setNumberOfTeamsUsingDB();
+        refreshTeamLists();
+    }
+    
+    private void setNumberOfTeamsUsingDB()
+    {
+        numTeams = 0;
+        for (Student s : Students)
+        {
+            if (s.memberOfTeam > numTeams-1) numTeams++;
+        }
+        System.out.println("numTeams=" + numTeams);
     }
     
     private ArrayList<Student> getStudentsFromDB(SQLite db)
@@ -261,10 +281,16 @@ public class CreateTeams {
         else System.out.println("Error, could determine student ID from display string");
         return ID;
     }
+    
+    private void refreshStudentObjects()
+    {
+        dbToUseWhenEventFired.refresh();
+        Students = getStudentsFromDB(dbToUseWhenEventFired);
+    }
         
     private void refreshTeamLists()
     {
-        
+        refreshStudentObjects();
         panelLists.removeAll();
         teamLists.clear();
         for (int i = 0; i < numTeams; i++)
