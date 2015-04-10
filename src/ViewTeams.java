@@ -22,22 +22,47 @@ public class ViewTeams extends JFrame
     int i2 = 0;
     
     Box box = Box.createVerticalBox();
+    JPanel panelBox = new JPanel();
     
     String currentStudentTeam;
+    
+    
+    String refreshButtonStr = "Refresh";
+    JButton buttonRefresh = new JButton(refreshButtonStr);
 
     public ViewTeams(SE se)
     {
         // Make main class panel and make it a scrollpane
-        JPanel p = new JPanel();
+        p = new JPanel();
         p.setBackground(Color.white);
         p.setBorder(mainStyle.border20);
         sp = new JScrollPane(p);
         sp.setBorder(mainStyle.borderScroll);
         mainStyle.smoothScroll(sp);
-        db = new SQLite();
-        teamNum = (db.numberOfTeams()); 
+        //db = new SQLite();
+        db = se.db;
+
         box.setVisible(true);
-               
+        
+        buttonListener btnListener = new buttonListener();
+        buttonRefresh.addActionListener(btnListener);
+        p.add(buttonRefresh);
+        
+        db = se.db;
+        refreshTables(db);
+    }
+    
+    private void refreshTables(SQLite db)
+    {
+        db.refresh();
+        panelBox.removeAll();
+        box.removeAll();
+        
+        teamNum = (db.numberOfTeams()); 
+        counter = 0;
+        i = 0;
+        i2 = 0;
+        
         while(counter <teamNum)
         {
             currentStudentTeam = String.valueOf(i);
@@ -112,8 +137,29 @@ public class ViewTeams extends JFrame
             i ++;
         }
         //p.add(refreshButton);
-        p.add(box);
-        p.setVisible(true);
+
+        panelBox.add(box);
+        box.validate();
+        box.repaint();
+        p.add(panelBox);
+        p.validate();
+        p.repaint();
+        
+        
+        //p.setVisible(true);
+    }
+    
+    private class buttonListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent ae)
+        {
+            if (ae.getActionCommand().compareTo(refreshButtonStr) == 0)
+            {
+                refreshTables(db);
+                validate();
+                repaint();
+            }
+        }
     }
 }
 
