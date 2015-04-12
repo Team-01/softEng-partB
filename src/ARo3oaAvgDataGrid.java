@@ -145,7 +145,7 @@ public class ARo3oaAvgDataGrid extends JPanel
             return "lower";
         }
         else
-            return "the same.";
+            return "the same";
     }
     
     public JPanel buildLvl1Panel()
