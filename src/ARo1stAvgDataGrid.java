@@ -64,7 +64,7 @@ public class ARo1stAvgDataGrid extends JPanel
         columnsHead.add("Email");
         columnsHead.add("Software Eng");
         columnsHead.add("Year average");
-        tbl = new TableTemplate(columnsHead, columnArray,false, blank, 2, 3);
+        tbl = new TableTemplate(columnsHead, columnArray,false, blank, 3, 2);
         this.add(tbl,gbc);
         revalidate();
     }

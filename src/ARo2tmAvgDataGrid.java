@@ -70,13 +70,15 @@ public class ARo2tmAvgDataGrid extends ARcommonMethods
                 db.studentsModuleMark);
         
         columnArray.add(teamColumn);
-        columnArray.add(yrAvgColumn);
         columnArray.add(modAvgColumn);
+        columnArray.add(yrAvgColumn);
+        
         ArrayList<String> columnsHead = new ArrayList();
         columnsHead.add("Team");
-        columnsHead.add("Year average");
         columnsHead.add("Software Eng");
-        tbl = new TableTemplate(columnsHead, columnArray,false,blank, 1, 2);
+        columnsHead.add("Year average");
+        
+        tbl = new TableTemplate(columnsHead, columnArray,false,blank, 2, 1);
         this.add(tbl,gbc);
         
         revalidate();
